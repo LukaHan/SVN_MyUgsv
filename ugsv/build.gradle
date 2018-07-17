@@ -1,46 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion = rootProject.ext.compileSdkVersion
-    buildToolsVersion = rootProject.ext.buildToolsVersion
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
 //        applicationId = "com.tencent.qcloud.xiaoshipin"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+
+        minSdkVersion 15
+        targetSdkVersion 24
 
         renderscriptTargetApi = 14
         renderscriptSupportModeEnabled = true
-        multiDexEnabled = true
-
-        ndk {
-            abiFilters rootProject.ext.ndkAbi
-        }
     }
-
-    buildTypes {
-        release {
-            minifyEnabled = false
-            proguardFiles.add(file('proguard-rules.pro'))
-            signingConfig signingConfigs.debug
-        }
-    }
-
-    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
-        }
-    }
-
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
-
 }
 
 dependencies {

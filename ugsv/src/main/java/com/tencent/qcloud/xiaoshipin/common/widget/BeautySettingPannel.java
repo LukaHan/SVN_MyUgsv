@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.VideoMaterialDownloadProgress;
-import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.VideoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +153,8 @@ public class BeautySettingPannel extends FrameLayout implements SeekBar.OnSeekBa
     private List<MotionData> motionDataKoubeiList = new ArrayList<>();
     private MotionData mMotionData;
 
-    private SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(VideoUtil.getContext());
+//    private SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(VideoUtil.getContext());
+    private SharedPreferences mPrefs;
 
 
     private void initMotionData(){
@@ -268,6 +268,8 @@ public class BeautySettingPannel extends FrameLayout implements SeekBar.OnSeekBa
 
         setFirstPickerType(view);
 
+        //修复VideoUtil.getContext()为null的问题
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         initMotionData();
     }
 

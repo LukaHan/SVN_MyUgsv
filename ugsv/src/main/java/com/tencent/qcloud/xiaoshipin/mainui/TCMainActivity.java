@@ -141,8 +141,8 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
     }
 
     private void showUserFragment() {
-        mBtnVideo.setBackgroundResource(R.drawable.ic_home_video_normal);
-        mBtnUser.setBackgroundResource(R.drawable.ic_user_selected);
+//        mBtnVideo.setBackgroundResource(R.drawable.ic_home_video_normal);
+//        mBtnUser.setBackgroundResource(R.drawable.ic_user_selected);
         if (mTCUserInfoFragment == null) {
             mTCUserInfoFragment = new TCUserInfoFragment();
         }
@@ -150,8 +150,8 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
     }
 
     private void showVideoFragment() {
-        mBtnVideo.setBackgroundResource(R.drawable.ic_home_video_selected);
-        mBtnUser.setBackgroundResource(R.drawable.ic_user_normal);
+//        mBtnVideo.setBackgroundResource(R.drawable.ic_home_video_selected);
+//        mBtnUser.setBackgroundResource(R.drawable.ic_user_normal);
         if (mTCLiveListFragment == null) {
             mTCLiveListFragment = new TCLiveListFragment();
         }

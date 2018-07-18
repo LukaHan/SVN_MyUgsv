@@ -30,9 +30,11 @@ public class TCApplication extends MultiDexApplication {
 //    private RefWatcher mRefWatcher;
 
     private static TCApplication instance;
-    private String ugcKey = "09bb91939d9ef9669f7ff16a850c92e5";
-    private String ugcLicenceUrl = "http://download-1252463788.cossh.myqcloud.com/xiaoshipin/licence_xsp/TXUgcSDK.licence";
+//    private String ugcKey = "09bb91939d9ef9669f7ff16a850c92e5";
+//    private String ugcLicenceUrl = "http://download-1252463788.cossh.myqcloud.com/xiaoshipin/licence_xsp/TXUgcSDK.licence";
 
+    private String ugcKey = "00535820dd2a02f1a2db1dec30e7b040";
+    private String ugcLicenceUrl = "http://license.vod2.myqcloud.com/license/v1/a56cb408e549c339f47dbede98e225ed/TXUgcSDK.licence";
     @Override
     public void onCreate() {
         super.onCreate();

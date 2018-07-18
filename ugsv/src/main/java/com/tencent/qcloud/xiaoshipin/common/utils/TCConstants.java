@@ -15,7 +15,7 @@ public class TCConstants {
     public static final String SVR_POST_URL = "https://livedemo.tim.qq.com/interface.php";
     public static final String DEFAULT_ELK_HOST = "";
     // BGM列表地址
-    public static final String SVR_BGM_GET_URL = "http://bgm-0.cosgz.myqcloud.com/bgm_list.json";
+    public static final String SVR_BGM_GET_URL = "http://bgm-1252463788.cosgz.myqcloud.com/bgm_list.json";
 
     //设置第三方平台的appid和appsecrect，大部分平台进行分享操作需要在第三方平台创建应用并提交审核，通过后拿到appid和appsecrect并填入这里，具体申请方式请参考http://dev.umeng.com/social/android/operation
     //有关友盟组件更多资料请参考这里：http://dev.umeng.com/social/android/quick-integration

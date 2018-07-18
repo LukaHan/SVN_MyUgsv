@@ -12,8 +12,6 @@ import com.tencent.qcloud.xiaoshipin.common.widget.VideoWorkProgressFragment;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.videochoose.TCVideoFileInfo;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoCutterActivity;
-import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoPreprocessActivity;
-import com.tencent.qcloud.xiaoshipin.videoeditor.utils.DialogUtil;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.TCEditerUtil;
 import com.tencent.rtmp.TXLog;
 import com.tencent.ugc.TXVideoEditConstants;
@@ -112,7 +110,7 @@ public class TCVideoJoinerActivity extends FragmentActivity {
                     desc = "licence校验失败";
                     break;
             }
-            TCUserMgr.getInstance().uploadLogs("videojoiner", TCUserMgr.getInstance().getUserId(), result.retCode, desc, new Callback() {
+            TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_JOINER, TCUserMgr.getInstance().getUserId(), result.retCode, desc, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
 

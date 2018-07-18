@@ -15,6 +15,10 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -49,6 +53,9 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
 import com.tencent.ugc.TXVideoEditConstants;
+import com.tencent.ugc.TXVideoEditer;
+import com.tencent.ugc.TXVideoInfoReader;
+import com.tencent.ugc.TXVideoJoiner;
 import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
@@ -69,15 +76,15 @@ import static android.view.View.GONE;
  * UGC短视频录制界面
  */
 public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClickListener, BeautySettingPannel.IOnBeautyParamsChangeListener
-        , TXRecordCommon.ITXVideoRecordListener, View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener {
+        , TXRecordCommon.ITXVideoRecordListener, View.OnTouchListener, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener
+        , TXVideoJoiner.TXVideoJoinerListener {
 
     private static final String TAG = "TCVideoRecordActivity";
-    private static final String OUTPUT_DIR_NAME = "TXUGC";
+    private int mRecordType = TCConstants.VIDEO_RECORD_TYPE_UGC_RECORD;
     private boolean mRecording = false;
     private boolean mStartPreview = false;
     private boolean mFront = true;
     private TXUGCRecord mTXCameraRecord;
-    private TXRecordCommon.TXRecordResult mTXRecordResult;
 
     private BeautySettingPannel.BeautyParams mBeautyParams = new BeautySettingPannel.BeautyParams();
     private TXCloudVideoView mVideoView;
@@ -143,6 +150,27 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
     private LinearLayout mLayoutLeftPanel;
     private RelativeLayout mLayoutRightPanel;
 
+    // 合拍
+    private View mFollowShotLayout;
+    private TXCloudVideoView mVideoViewFollowShotRecord;
+    private FrameLayout mVideoViewPlay;
+    private long mFollowShotVideoDuration; // 合拍视频的时长ms
+    // 合拍中的播放用TXEditer播放，也可以使用TXVodPlayer播放
+    private TXVideoEditer mTXVideoEditer;
+    private String mFollowShotVideoPath;
+    private String mRecordVideoPath;
+    // 合拍接口
+    private TXVideoJoiner mTXVideoJoiner;
+    private int mFollowShotVideoFps; // 跟拍视频的fps
+    private int mFollowShotAudioSampleRateType; // 跟拍视频的音频采样率
+    private BackGroundHandler mBgHandler;
+    private HandlerThread mHandlerThread;
+    private TXVideoEditConstants.TXVideoInfo recordVideoInfo;
+    private TXVideoEditConstants.TXVideoInfo followVideoInfo;
+    private final int MSG_LOAD_VIDEO_INFO = 1000;
+    private String mFollowShotVideoOutputPath;
+    private boolean isReadyJoin = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,12 +178,26 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_video_record);
 
         initViews();
 
         getData();
+        
+        updateViews();
+    }
+
+    private void updateViews() {
+        if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
+            // 合唱不支持切换比例
+            mIvScale.setEnabled(false);
+            // 不支持变速录制
+            for (int i = 0; i < mRadioGroup.getChildCount(); i++) {
+                mRadioGroup.getChildAt(i).setEnabled(false);
+            }
+        }
     }
 
     private void getData() {
@@ -165,10 +207,45 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
             return;
         }
 
-        mCurrentAspectRatio = mAspectRatio;
+        mRecordType = intent.getIntExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_UGC_RECORD);
+        if (mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT) {
+            mFollowShotLayout.setVisibility(View.VISIBLE);
+            // 录制的界面
+            mVideoView = mVideoViewFollowShotRecord;
+            // 播放的界面
+            mFollowShotVideoPath = intent.getStringExtra(TCConstants.VIDEO_EDITER_PATH);
+            mFollowShotVideoDuration = (int)(intent.getFloatExtra(TCConstants.VIDEO_RECORD_DURATION, 0) * 1000);
+            initPlayer();
+            // 录制进度条以跟拍视频的进度为最大长度，fps以跟拍视频的fps为准
+            mMaxDuration = (int)mFollowShotVideoDuration;
+            mFollowShotVideoFps = intent.getIntExtra(TCConstants.RECORD_CONFIG_FPS, 20);
+            mFollowShotAudioSampleRateType = intent.getIntExtra(TCConstants.VIDEO_RECORD_AUDIO_SAMPLE_RATE_TYPE, TXRecordCommon.AUDIO_SAMPLERATE_48000);
+            // 初始化合拍的接口
+            mTXVideoJoiner = new TXVideoJoiner(this);
+            mTXVideoJoiner.setVideoJoinerListener(this);
+            // 初始化子线程
+            mHandlerThread = new HandlerThread("FollowShotThread");
+            mHandlerThread.start();
+            mBgHandler = new BackGroundHandler(mHandlerThread.getLooper());
+        }else{
+            mRecordType = TCConstants.VIDEO_RECORD_TYPE_UGC_RECORD;
+        }
 
+        mCurrentAspectRatio = mAspectRatio;
         mRecordProgressView.setMaxDuration(mMaxDuration);
         mRecordProgressView.setMinDuration(mMinDuration);
+    }
+
+    private void initPlayer() {
+        if(mTXVideoEditer != null){
+            return;
+        }
+        mTXVideoEditer = new TXVideoEditer(this);
+        mTXVideoEditer.setVideoPath(mFollowShotVideoPath);
+        TXVideoEditConstants.TXPreviewParam param = new TXVideoEditConstants.TXPreviewParam();
+        param.videoView = mVideoViewPlay;
+        param.renderMode = TXVideoEditConstants.PREVIEW_RENDER_MODE_FILL_EDGE;
+        mTXVideoEditer.initWithPreview(param);
     }
 
     private void startCameraPreview() {
@@ -178,16 +255,25 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         mTXCameraRecord = TXUGCRecord.getInstance(this.getApplicationContext());
         mTXCameraRecord.setVideoRecordListener(this);
         // 推荐配置
-        TXRecordCommon.TXUGCSimpleConfig simpleConfig = new TXRecordCommon.TXUGCSimpleConfig();
-        simpleConfig.videoQuality = mRecommendQuality;
-        simpleConfig.minDuration = mMinDuration;
-        simpleConfig.maxDuration = mMaxDuration;
-        simpleConfig.isFront = mFront;
-        simpleConfig.needEdit = true;
+        TXRecordCommon.TXUGCCustomConfig customConfig = new TXRecordCommon.TXUGCCustomConfig();
+        customConfig.minDuration = mMinDuration;
+        customConfig.maxDuration = mMaxDuration;
+        customConfig.isFront = mFront;
+        if (mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT) {
+            customConfig.videoFps = mFollowShotVideoFps;
+            customConfig.audioSampleRate = mFollowShotAudioSampleRateType; // 录制的视频的音频采样率必须与跟拍的音频采样率相同
+            customConfig.needEdit = false;
+            mTXCameraRecord.setVideoRenderMode(TXRecordCommon.VIDEO_RENDER_MODE_ADJUST_RESOLUTION); // 设置渲染模式为自适应模式
+            mTXCameraRecord.setMute(true); // 跟拍不从喇叭录制声音，因为跟拍的视频声音也会从喇叭发出来被麦克风录制进去，造成跟原视频声音的"二重唱"。
+        }else{
+            customConfig.needEdit = true;
+            mTXCameraRecord.setMute(false);
+        }
+
         mTXCameraRecord.setHomeOrientation(mHomeOrientation);
         mTXCameraRecord.setRenderRotation(mRenderRotation);
 //        mTXCameraRecord.setRecordSpeed(mRecordSpeed);
-        mTXCameraRecord.startCameraSimplePreview(simpleConfig, mVideoView);
+        mTXCameraRecord.startCameraCustomPreview(customConfig, mVideoView);
         mTXCameraRecord.setAspectRatio(mCurrentAspectRatio);
 
         mTXCameraRecord.setBeautyDepth(mBeautyParams.mBeautyStyle, mBeautyParams.mBeautyLevel, mBeautyParams.mWhiteLevel, mBeautyParams.mRuddyLevel);
@@ -275,6 +361,11 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         mVideoView = (TXCloudVideoView) findViewById(R.id.video_view);
         mVideoView.enableHardwareDecode(true);
 
+        mFollowShotLayout = findViewById(R.id.follow_shot_layout);
+//        mFollowShotRecordViewContanier = (RelativeLayout) findViewById(R.id.follow_shot_record_view_container);
+        mVideoViewPlay = (FrameLayout) findViewById(R.id.video_view_follow_shot_play);
+        mVideoViewFollowShotRecord = (TXCloudVideoView) findViewById(R.id.video_view_follow_shot_record);
+
         mProgressTime = (TextView) findViewById(R.id.progress_time);
         mIvDeleteLastPart = (ImageView) findViewById(R.id.btn_delete_last_part);
         mIvDeleteLastPart.setOnClickListener(this);
@@ -287,6 +378,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         mLayoutRightPanel = (RelativeLayout) findViewById(R.id.record_right_panel);
 
         mIvScale = (ImageView) findViewById(R.id.iv_scale);
+        mIvScale.setOnClickListener(this);
         mIvScaleMask = (ImageView) findViewById(R.id.iv_scale_mask);
         mIvAspectSelectFirst = (ImageView) findViewById(R.id.iv_scale_first);
         mIvAspectSelectSecond = (ImageView) findViewById(R.id.iv_scale_second);
@@ -485,6 +577,12 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         if (hasPermission()) {
             startCameraPreview();
         }
+
+        if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
+            initPlayer();
+            mTXVideoEditer.startPlayFromTime(0, mFollowShotVideoDuration);
+            TXCLog.i(TAG, "onStart, mTXVideoEditer.startPlayFromTime");
+        }
     }
 
     @Override
@@ -640,10 +738,11 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         } else {
             isSelected = false;
             mRecordProgressView.deleteLast();
+            isReadyJoin = false;
             mTXCameraRecord.getPartsManager().deleteLastPart();
             float timeSecondFloat = mTXCameraRecord.getPartsManager().getDuration() / 1000;
             mProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecondFloat) + "秒");
-            if (timeSecondFloat < mMinDuration / 1000) {
+            if (timeSecondFloat < mMinDuration / 1000 || mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT) {
                 mTvNextStep.setVisibility(View.GONE);
             } else {
                 mTvNextStep.setVisibility(View.VISIBLE);
@@ -797,6 +896,10 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         mLayoutBeauty.setVisibility(View.GONE);
         mLayoutLeftPanel.setVisibility(View.GONE);
         mLayoutRightPanel.setVisibility(View.GONE);
+        if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
+            int recordPostion = mTXCameraRecord.getPartsManager().getDuration();
+            mTXVideoEditer.startPlayFromTime(recordPostion, mFollowShotVideoDuration);
+        }
     }
 
     private void pauseRecord() {
@@ -823,6 +926,9 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         if (mTXCameraRecord.getPartsManager().getPartsPathList().size() == 0) {
             mIvMusicMask.setVisibility(View.GONE);
             mIvScaleMask.setVisibility(View.GONE);
+        }
+        if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
+            mTXVideoEditer.pausePlay();
         }
     }
 
@@ -855,6 +961,12 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
     }
 
     private void startRecord() {
+        if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT && isReadyJoin){
+            // 上次已经合拍过了，如果没有删除分片，把录制分片生成录制视频，再次合成合拍视频。
+            mTXCameraRecord.stopRecord();
+            return;
+        }
+
         mIvMusicMask.setVisibility(View.VISIBLE);
         mIvScaleMask.setVisibility(View.VISIBLE);
         mIvDeleteLastPart.setImageResource(R.drawable.ugc_delete_last_part_disable);
@@ -889,7 +1001,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
                 desc = "licence校验失败";
                 break;
         }
-        TCUserMgr.getInstance().uploadLogs("startrecord", TCUserMgr.getInstance().getUserId(), result, desc, new Callback() {
+        TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_START_RECORD, TCUserMgr.getInstance().getUserId(), result, desc, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
@@ -924,24 +1036,38 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         mLayoutBeauty.setVisibility(View.GONE);
         mLayoutLeftPanel.setVisibility(View.GONE);
         mLayoutRightPanel.setVisibility(View.GONE);
+
+        if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
+            mTXVideoEditer.stopPlay();
+            mTXVideoEditer.startPlayFromTime(0, mFollowShotVideoDuration);
+        }
     }
 
     private String getCustomVideoOutputPath() {
+        return getCustomVideoOutputPath(null);
+    }
+
+    private String getCustomVideoOutputPath(String fileNamePrefix) {
         long currentTime = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
         String time = sdf.format(new Date(currentTime));
-        String outputDir = Environment.getExternalStorageDirectory() + File.separator + OUTPUT_DIR_NAME;
+        String outputDir = Environment.getExternalStorageDirectory() + File.separator + TCConstants.OUTPUT_DIR_NAME;
         File outputFolder = new File(outputDir);
         if (!outputFolder.exists()) {
             outputFolder.mkdir();
         }
-        String tempOutputPath = outputDir + File.separator + "TXUGC_" + time + ".mp4";
+        String tempOutputPath;
+        if(TextUtils.isEmpty(fileNamePrefix)){
+            tempOutputPath = outputDir + File.separator + "TXUGC_" + time + ".mp4";
+        }else{
+            tempOutputPath = outputDir + File.separator + "TXUGC_" + fileNamePrefix + time + ".mp4";
+        }
         return tempOutputPath;
     }
 
-    private void startEditerPreview() {
+    private void startEditerPreview(String videoPath) {
         Intent intent = new Intent(this, TCVideoPreprocessActivity.class);
-        intent.putExtra(TCConstants.VIDEO_EDITER_PATH, mTXRecordResult.videoPath);
+        intent.putExtra(TCConstants.VIDEO_EDITER_PATH, videoPath);
         startActivity(intent);
     }
 
@@ -1076,7 +1202,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         mRecordProgressView.setProgress((int) milliSecond);
         float timeSecondFloat = milliSecond / 1000f;
         mProgressTime.setText(String.format(Locale.CHINA, "%.1f", timeSecondFloat) + "秒");
-        if (timeSecondFloat < mMinDuration / 1000) {
+        if (timeSecondFloat < mMinDuration / 1000 || mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT) {
             mTvNextStep.setVisibility(View.GONE);
         } else {
             mTvNextStep.setVisibility(View.VISIBLE);
@@ -1107,16 +1233,15 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
 
     @Override
     public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
-        mCompleteProgressDialog.dismiss();
+//        mCompleteProgressDialog.dismiss();
 
-        mTXRecordResult = result;
         String desc = null;
-        if (mTXRecordResult.retCode < 0) {
-            desc = "onRecordComplete录制失败:" + mTXRecordResult.descMsg;
+        if (result.retCode < 0) {
+            desc = "onRecordComplete录制失败:" + result.descMsg;
         } else {
             desc = "视频录制成功";
         }
-        TCUserMgr.getInstance().uploadLogs("videorecord", TCUserMgr.getInstance().getUserId(), mTXRecordResult.retCode, desc, new Callback() {
+        TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_RECORD, TCUserMgr.getInstance().getUserId(), result.retCode, desc, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
@@ -1127,15 +1252,115 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
 
             }
         });
-        TXCLog.i(TAG, "onRecordComplete, result retCode = " + result.retCode + ", descMsg = " + result.descMsg + ", videoPath + " + result.videoPath + ", coverPath = " + result.coverPath);
-        if (mTXRecordResult.retCode < 0) {
+        TXCLog.i(TAG, "onRecordComplete, result retCode = " + result.retCode + ", descMsg = " + result.descMsg + ", videoPath = " + result.videoPath + ", coverPath = " + result.coverPath);
+        if (result.retCode < 0) {
+            mCompleteProgressDialog.dismiss();
             mRecording = false;
-            Toast.makeText(TCVideoRecordActivity.this.getApplicationContext(), "录制失败，原因：" + mTXRecordResult.descMsg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(TCVideoRecordActivity.this.getApplicationContext(), "录制失败，原因：" + result.descMsg, Toast.LENGTH_SHORT).show();
         } else {
+            pauseRecord();
             mRecording = false;
             mPause = false;
             mComposeRecordBtn.pauseRecord();
-            startEditerPreview();
+            if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
+                mCompleteProgressDialog.setMessage("正在合成...");
+                mCompleteProgressDialog.show();
+                mRecordVideoPath = result.videoPath;
+                mBgHandler.sendEmptyMessage(MSG_LOAD_VIDEO_INFO);
+            }else{mCompleteProgressDialog.dismiss();
+                startEditerPreview(result.videoPath);
+            }
+        }
+    }
+
+    class BackGroundHandler extends Handler {
+
+        public BackGroundHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_LOAD_VIDEO_INFO:
+                    recordVideoInfo = TXVideoInfoReader.getInstance().getVideoFileInfo(mRecordVideoPath);
+                    followVideoInfo = TXVideoInfoReader.getInstance().getVideoFileInfo(mFollowShotVideoPath);
+                    prepareToJoiner();
+                    break;
+            }
+        }
+    }
+
+    private void prepareToJoiner(){
+        List<String> videoSourceList = new ArrayList<>();
+        videoSourceList.add(mRecordVideoPath);
+        videoSourceList.add(mFollowShotVideoPath);
+        mTXVideoJoiner.setVideoPathList(videoSourceList);
+        mFollowShotVideoOutputPath = getCustomVideoOutputPath("Follow_Shot_");
+        // 以左边录制的视频宽高为基准，右边视频等比例缩放
+        int followVideoWidth;
+        int followVideoHeight;
+        if ((float) followVideoInfo.width / followVideoInfo.height >= (float)recordVideoInfo.width / recordVideoInfo.height) {
+            followVideoWidth = recordVideoInfo.width;
+            followVideoHeight = (int) ((float)recordVideoInfo.width * followVideoInfo.height / followVideoInfo.width);
+        } else {
+            followVideoWidth = (int) ((float)recordVideoInfo.height * followVideoInfo.width / followVideoInfo.height);
+            followVideoHeight = recordVideoInfo.height;
+        }
+
+        TXVideoEditConstants.TXAbsoluteRect rect1 = new TXVideoEditConstants.TXAbsoluteRect();
+        rect1.x = 0;                     //第一个视频的左上角位置
+        rect1.y = 0;
+        rect1.width = recordVideoInfo.width;   //第一个视频的宽高
+        rect1.height = recordVideoInfo.height;
+
+        TXVideoEditConstants.TXAbsoluteRect rect2 = new TXVideoEditConstants.TXAbsoluteRect();
+        rect2.x = rect1.x + rect1.width; //第2个视频的左上角位置
+        rect2.y = (recordVideoInfo.height - followVideoHeight) / 2;
+        rect2.width = followVideoWidth;  //第2个视频的宽高
+        rect2.height = followVideoHeight;
+
+        List<TXVideoEditConstants.TXAbsoluteRect> list = new ArrayList<>();
+        list.add(rect1);
+        list.add(rect2);
+        mTXVideoJoiner.setSplitScreenList(list, recordVideoInfo.width + followVideoWidth, recordVideoInfo.height); //第2，3个param：两个视频合成画布的宽高
+        mTXVideoJoiner.splitJoinVideo(TXVideoEditConstants.VIDEO_COMPRESSED_540P, mFollowShotVideoOutputPath);
+    }
+
+    @Override
+    public void onJoinProgress(final float progress) {
+        TXCLog.i(TAG, "onJoinProgress, progress = " + progress);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int progressInt = (int) (progress * 100);
+                mCompleteProgressDialog.setMessage("正在合成..." + progressInt + "%");
+            }
+        });
+    }
+
+    @Override
+    public void onJoinComplete(TXVideoEditConstants.TXJoinerResult result) {
+        mCompleteProgressDialog.dismiss();
+        if(result.retCode == TXVideoEditConstants.JOIN_RESULT_OK){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    isReadyJoin = true;
+                    startEditerPreview(mFollowShotVideoOutputPath);
+                    if(mTXVideoEditer != null){
+                        mTXVideoEditer.release();
+                        mTXVideoEditer = null;
+                    }
+                }
+            });
+        }else{
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(TCVideoRecordActivity.this, "合成失败", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -1310,6 +1535,10 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         if (!mRecording) {
             if (mTXCameraRecord != null) {
                 mTXCameraRecord.getPartsManager().deleteAllParts();
+            }
+            if(mTXVideoEditer != null){
+                mTXVideoEditer.stopPlay();
+                mTXVideoEditer.release();
             }
             finish();
             return;

@@ -245,6 +245,11 @@ public class TCVideoEditerActivity extends FragmentActivity implements
             TelephonyManager tm = (TelephonyManager) this.getApplicationContext().getSystemService(Service.TELEPHONY_SERVICE);
             tm.listen(mPhoneListener, PhoneStateListener.LISTEN_NONE);
         }
+        // onDestroy()生命周期函数调用的时机不及时
+//        clearConfig();
+    }
+
+    private void clearConfig() {
         if (mTXVideoEditer != null) {
             mTXVideoEditer.setVideoGenerateListener(null);
             mTXVideoEditer.release();
@@ -252,7 +257,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
         // 清除对TXVideoEditer的引用以及相关配置
         TCVideoEditerWrapper.getInstance().clear();
 
-        // 清空保存的气泡字幕参数 （避免下一个视频混入上一个视频的气泡设定
+        // 清空保存的气泡字幕参数 （避免下一个视频混入上一个视频的气泡设定)
         TCBubbleViewInfoManager.getInstance().clear();
         // 清空保存的贴纸参数
         TCPasterViewInfoManager.getInstance().clear();
@@ -348,6 +353,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
             saveVideoToDCIM();
             Intent intent = new Intent(this, TCMainActivity.class);
             startActivity(intent);
+            clearConfig();
             finish();
         }
     }
@@ -370,7 +376,6 @@ public class TCVideoEditerActivity extends FragmentActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            finish();
         }
     }
 
@@ -472,6 +477,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
         } else if (i == R.id.layout_publish_success) {
             intent = new Intent(this, TCMainActivity.class);
             startActivity(intent);
+            clearConfig();
             finish();
 
         }
@@ -504,6 +510,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        clearConfig();
                         finish();
                     }
                 })
@@ -619,7 +626,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
                         desc = "licence校验失败";
                         break;
                 }
-                TCUserMgr.getInstance().uploadLogs("videoedit", TCUserMgr.getInstance().getUserId(), result.retCode, desc, new Callback() {
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_EDIT, TCUserMgr.getInstance().getUserId(), result.retCode, desc, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
 

@@ -457,20 +457,6 @@ public class TCPasterFragment extends BaseEditFragment implements BaseRecyclerAd
 
     @Override
     public void onClick(View v) {
-        //            case R.id.tv_paster_play:
-//                int playState = ((TCVideoEffectActivity) getActivity()).getmCurrentState();
-//                TXCLog.i(TAG, "playState = " + playState);
-//                if(playState == PlayState.STATE_PAUSE || playState == PlayState.STATE_PREVIEW_AT_TIME){
-//                    mTCLayerViewGroup.setVisibility(View.GONE);
-//                    addPasterListVideoToEditer();
-//                    saveIntoManager();
-//                }else{
-//                    mTCLayerViewGroup.setVisibility(View.VISIBLE);
-//                }
-//
-//                ((TCVideoEffectActivity) getActivity()).switchPlayVideo();
-//                break;
-
         int i = v.getId();
         if (i == R.id.iv_del) {
             deletePaster();

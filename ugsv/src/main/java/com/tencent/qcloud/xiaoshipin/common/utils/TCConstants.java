@@ -96,20 +96,24 @@ public class TCConstants {
     /**
      * UGC小视频录制信息
      */
-    public static final String VIDEO_RECORD_TYPE        = "type";
-    public static final String VIDEO_RECORD_RESULT      = "result";
-    public static final String VIDEO_RECORD_DESCMSG     = "descmsg";
-    public static final String VIDEO_RECORD_VIDEPATH    = "path";
-    public static final String VIDEO_RECORD_COVERPATH   = "coverpath";
-    public static final String VIDEO_RECORD_ROTATION    = "rotation";
-    public static final String VIDEO_RECORD_NO_CACHE    = "nocache";
-    public static final String VIDEO_RECORD_DURATION    =  "duration";
-    public static final String VIDEO_RECORD_RESOLUTION  = "resolution";
+    public static final String VIDEO_RECORD_TYPE                = "type";
+    public static final String VIDEO_RECORD_RESULT              = "result";
+    public static final String VIDEO_RECORD_DESCMSG             = "descmsg";
+    public static final String VIDEO_RECORD_VIDEPATH            = "path";
+    public static final String VIDEO_RECORD_COVERPATH           = "coverpath";
+    public static final String VIDEO_RECORD_ROTATION            = "rotation";
+    public static final String VIDEO_RECORD_NO_CACHE            = "nocache";
+    public static final String VIDEO_RECORD_DURATION            =  "duration";
+    public static final String VIDEO_RECORD_RESOLUTION          = "resolution";
+    public static final String VIDEO_RECORD_AUDIO_SAMPLE_RATE_TYPE = "audio_sample_rate"; // 音频采样率
 
-    public static final int VIDEO_RECORD_TYPE_PUBLISH   = 1;   // 推流端录制
-    public static final int VIDEO_RECORD_TYPE_PLAY      = 2;   // 播放端录制
-    public static final int VIDEO_RECORD_TYPE_UGC_RECORD = 3;   // 短视频录制
-    public static final int VIDEO_RECORD_TYPE_EDIT      = 4;   // 短视频编辑
+    public static final int VIDEO_RECORD_TYPE_PUBLISH       = 1;   // 推流端录制
+    public static final int VIDEO_RECORD_TYPE_PLAY          = 2;   // 播放端录制
+    public static final int VIDEO_RECORD_TYPE_UGC_RECORD    = 3;   // 短视频录制
+    public static final int VIDEO_RECORD_TYPE_EDIT          = 4;   // 短视频编辑
+    public static final int VIDEO_RECORD_TYPE_FOLLOW_SHOT   = 5;   // 短视频合拍
+
+    public static final String OUTPUT_DIR_NAME = "TXUGC";
 
     /**
      * 用户可见的错误提示语
@@ -155,4 +159,20 @@ public class TCConstants {
     // 短视频licence名称
     public static final String UGC_LICENCE_NAME = "TXUgcSDK.licence";
 
+    // ELK上报事件
+    public static final String ELK_ACTION_START_UP = "startup";
+    public static final String ELK_ACTION_STAY_TIME = "staytime";
+    public static final String ELK_ACTION_PICTURE_EDIT = "pictureedit";
+    public static final String ELK_ACTION_REGISTER = "register";
+    public static final String ELK_ACTION_INSTALL = "install";
+    public static final String ELK_ACTION_LOGIN = "login";
+    public static final String ELK_ACTION_VIDEO_EDIT = "videoedit";
+    public static final String ELK_ACTION_VIDEO_JOINER = "videojoiner";
+    public static final String ELK_ACTION_VIDEO_SIGN = "videosign";
+    public static final String ELK_ACTION_VIDEO_UPLOAD_VOD = "videouploadvod";
+    public static final String ELK_ACTION_VIDEO_UPLOAD_SERVER = "videouploadserver";
+    public static final String ELK_ACTION_START_RECORD = "startrecord";
+    public static final String ELK_ACTION_VIDEO_RECORD = "videorecord";
+    public static final String ELK_ACTION_VOD_PLAY = "vodplay";
+    public static final String ELK_ACTION_VIDEO_CHORUS = "videochorus";
 }

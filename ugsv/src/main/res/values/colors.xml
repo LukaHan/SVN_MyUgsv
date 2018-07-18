@@ -183,6 +183,9 @@
     <color name="time_bg_normal">#0accac</color>
     <color name="time_bg_selected">#AA0ACCAC</color>
 
+    <color name="follow_shot_bg_normal">#ec766a</color>
+    <color name="follow_shot_bg_selected">#ec6455</color>
+
     <!-- 裁剪范围颜色 -->
     <color name="colorAccentTransparent30">#B2FF584C</color>
     <color name="actionsheet_gray">#8F8F8F</color>

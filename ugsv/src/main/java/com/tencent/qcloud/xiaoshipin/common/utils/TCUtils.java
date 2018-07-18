@@ -506,17 +506,17 @@ public class TCUtils {
         paint.setColorFilter(filter);
         canvas.drawBitmap(resource, 0, 0, paint);
 
-//        RenderScript rs = RenderScript.create(context.getApplicationContext());
-//        Allocation input = Allocation.createFromBitmap(rs, bitmap, Allocation.MipmapControl.MIPMAP_NONE,
-//                Allocation.USAGE_SCRIPT);
-//        Allocation output = Allocation.createTyped(rs, input.getType());
-//        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-//
-//        blur.setInput(input);
-//        blur.setRadius(10);
-//        blur.forEach(output);
-//        output.copyTo(bitmap);
-//        rs.destroy();
+        RenderScript rs = RenderScript.create(context.getApplicationContext());
+        Allocation input = Allocation.createFromBitmap(rs, bitmap, Allocation.MipmapControl.MIPMAP_NONE,
+                Allocation.USAGE_SCRIPT);
+        Allocation output = Allocation.createTyped(rs, input.getType());
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+
+        blur.setInput(input);
+        blur.setRadius(10);
+        blur.forEach(output);
+        output.copyTo(bitmap);
+        rs.destroy();
 
         return bitmap;
     }

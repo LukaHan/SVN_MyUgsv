@@ -111,7 +111,7 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                TCUserMgr.getInstance().uploadLogs("videosign", TCUserMgr.getInstance().getUserId(), TCUserMgr.SUCCESS_CODE, "获取签名成功", new Callback() {
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_SIGN, TCUserMgr.getInstance().getUserId(), TCUserMgr.SUCCESS_CODE, "获取签名成功", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
 
@@ -126,7 +126,7 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
 
             @Override
             public void onFailure(int code, final String msg) {
-                TCUserMgr.getInstance().uploadLogs("videosign", TCUserMgr.getInstance().getUserId(), code, "获取签名失败", new Callback() {
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_SIGN, TCUserMgr.getInstance().getUserId(), code, "获取签名失败", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
 
@@ -242,7 +242,7 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
         } else {
             desc = "视频发布失败onPublishComplete:" + txPublishResult.descMsg;
         }
-        TCUserMgr.getInstance().uploadLogs("videouploadvod", TCUserMgr.getInstance().getUserId(), txPublishResult.retCode, desc, new Callback() {
+        TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_UPLOAD_VOD, TCUserMgr.getInstance().getUserId(), txPublishResult.retCode, desc, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
@@ -304,7 +304,7 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
             TCUserMgr.getInstance().request("/upload_ugc", body, new TCUserMgr.HttpCallback("upload_ugc", new TCUserMgr.Callback() {
                 @Override
                 public void onSuccess(JSONObject data) {
-                    TCUserMgr.getInstance().uploadLogs("videouploadserver", TCUserMgr.getInstance().getUserId(), TCUserMgr.SUCCESS_CODE, "UploadUGCVideo Sucess", new Callback() {
+                    TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_UPLOAD_SERVER, TCUserMgr.getInstance().getUserId(), TCUserMgr.SUCCESS_CODE, "UploadUGCVideo Sucess", new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
 
@@ -329,7 +329,7 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
 
                 @Override
                 public void onFailure(int code, final String msg) {
-                    TCUserMgr.getInstance().uploadLogs("videouploadserver", TCUserMgr.getInstance().getUserId(), code, msg, new Callback() {
+                    TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_UPLOAD_SERVER, TCUserMgr.getInstance().getUserId(), code, msg, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
 

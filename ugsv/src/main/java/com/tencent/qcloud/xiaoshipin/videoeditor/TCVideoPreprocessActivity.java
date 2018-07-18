@@ -19,7 +19,6 @@ import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.FileUtils;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.widget.VideoWorkProgressFragment;
-import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
 import com.tencent.qcloud.xiaoshipin.videoeditor.common.TCConfirmDialog;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.DialogUtil;
 import com.tencent.ugc.TXVideoEditConstants;
@@ -176,7 +175,6 @@ public class TCVideoPreprocessActivity extends FragmentActivity implements
      * ===========================================播放器预览相关 ===========================================
      */
 
-
     private void startEditActivity() {
         // 更新一下VideoInfo的时间
         Intent intent = new Intent(this, TCVideoEditerActivity.class);
@@ -187,7 +185,6 @@ public class TCVideoPreprocessActivity extends FragmentActivity implements
         startActivity(intent);
         finish();
     }
-
 
     @Override
     protected void onDestroy() {

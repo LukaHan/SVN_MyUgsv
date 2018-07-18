@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tencent.qcloud.xiaoshipin.R;
+import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
 
@@ -223,7 +224,7 @@ public class TCRegisterActivity extends Activity {
             @Override
             public void onSuccess(JSONObject data) {
                 showToast("成功注册");
-                tcLoginMgr.uploadLogs("register",username, TCUserMgr.SUCCESS_CODE, "注册成功", new Callback() {
+                tcLoginMgr.uploadLogs(TCConstants.ELK_ACTION_REGISTER, username, TCUserMgr.SUCCESS_CODE, "注册成功", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d(TAG,"uploadLogs onFailure");
@@ -260,7 +261,7 @@ public class TCRegisterActivity extends Activity {
                 } else if (code == 612) {
                     errorMsg = "用户已存在";
                 }
-                tcLoginMgr.uploadLogs("register",username, code, errorMsg, new Callback() {
+                tcLoginMgr.uploadLogs(TCConstants.ELK_ACTION_REGISTER, username, code, errorMsg, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d(TAG,"uploadLogs onFailure");

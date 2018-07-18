@@ -1,7 +1,6 @@
 package com.tencent.qcloud.xiaoshipin;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.util.Log;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCHttpEngine;
-import com.tencent.qcloud.xiaoshipin.common.utils.TCLog;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.rtmp.TXLiveBase;
 import com.tencent.ugc.TXUGCBase;
@@ -32,11 +30,8 @@ public class TCApplication extends MultiDexApplication {
 //    private RefWatcher mRefWatcher;
 
     private static TCApplication instance;
-//    private String ugcKey = "09bb91939d9ef9669f7ff16a850c92e5";
-//    private String ugcLicenceUrl = "http://download-1252463788.cossh.myqcloud.com/xiaoshipin/licence_xsp/TXUgcSDK.licence";
-
-    private String ugcKey = "00535820dd2a02f1a2db1dec30e7b040";
-    private String ugcLicenceUrl = "http://license.vod2.myqcloud.com/license/v1/a56cb408e549c339f47dbede98e225ed/TXUgcSDK.licence";
+    private String ugcKey = "09bb91939d9ef9669f7ff16a850c92e5";
+    private String ugcLicenceUrl = "http://download-1252463788.cossh.myqcloud.com/xiaoshipin/licence_xsp/TXUgcSDK.licence";
 
     @Override
     public void onCreate() {
@@ -53,7 +48,7 @@ public class TCApplication extends MultiDexApplication {
         TXUGCBase.getInstance().setLicence(this, ugcLicenceUrl, ugcKey);
 
         // 上报启动次数
-        TCUserMgr.getInstance().uploadLogs("startup", TCUserMgr.getInstance().getUserId(), 0, "", new Callback() {
+        TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_START_UP, TCUserMgr.getInstance().getUserId(), 0, "", new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
@@ -86,7 +81,7 @@ public class TCApplication extends MultiDexApplication {
         CrashReport.initCrashReport(getApplicationContext(), TCConstants.BUGLY_APPID, true, strategy);
 
         //设置rtmpsdk log回调，将log保存到文件
-        TXLiveBase.setListener(new TCLog(getApplicationContext()));
+//        TXLiveBase.setListener(new TCLog(getApplicationContext()));
 
         TCUserMgr.getInstance().initContext(getApplicationContext());
         TCHttpEngine.getInstance().initContext(getApplicationContext());
@@ -153,7 +148,7 @@ public class TCApplication extends MultiDexApplication {
     }
 
     private void uploadStayTime(long diff) {
-        TCUserMgr.getInstance().uploadLogs("staytime", TCUserMgr.getInstance().getUserId(), diff, "", new Callback() {
+        TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_STAY_TIME, TCUserMgr.getInstance().getUserId(), diff, "", new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 

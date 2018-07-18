@@ -450,7 +450,7 @@ public class TCUserMgr {
                     saveUserInfo();
 
                     // 登录成功上报
-                    uploadLogs("login",userid, SUCCESS_CODE, "登录成功", new okhttp3.Callback() {
+                    uploadLogs(TCConstants.ELK_ACTION_LOGIN, userid, SUCCESS_CODE, "登录成功", new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.d(TAG,"login uploadLogs onFailure");
@@ -470,7 +470,7 @@ public class TCUserMgr {
                 @Override
                 public void onFailure(int code, final String msg) {
                     // 登录失败上报
-                    uploadLogs("login",userid, code, msg, new okhttp3.Callback() {
+                    uploadLogs(TCConstants.ELK_ACTION_LOGIN, userid, code, msg, new okhttp3.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.d(TAG,"login uploadLogs onFailure");

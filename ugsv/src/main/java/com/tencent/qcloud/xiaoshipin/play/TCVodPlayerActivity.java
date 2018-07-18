@@ -1,11 +1,10 @@
 package com.tencent.qcloud.xiaoshipin.play;
 
+import android.app.ProgressDialog;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,20 +24,24 @@ import com.bumptech.glide.Glide;
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.activity.TCBaseActivity;
+import com.tencent.qcloud.xiaoshipin.common.utils.DownloadUtil;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveListFragment;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCVideoInfo;
+import com.tencent.qcloud.xiaoshipin.videorecord.TCVideoRecordActivity;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
-import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.TXVodPlayConfig;
 import com.tencent.rtmp.TXVodPlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
+import com.tencent.ugc.TXVideoEditConstants;
+import com.tencent.ugc.TXVideoInfoReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -58,8 +62,11 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
     private MyPagerAdapter mPagerAdapter;
     private TXCloudVideoView mTXCloudVideoView;
     private TextView mTvBack;
-
     private ImageView mIvCover;
+    // 合拍相关
+    private Button mBtnFollowShot;
+    private ProgressDialog mDownloadProgressDialog;
+    private TXVideoInfoReader mVideoInfoReader;
     // 发布者id 、视频地址、 发布者名称、 头像URL、 封面URL
     private List<TCVideoInfo> mTCLiveInfoList;
     private int mInitTCLiveInfoPosition;
@@ -121,7 +128,33 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
                 finish();
             }
         });
+        mBtnFollowShot = (Button)findViewById(R.id.btn_follow_shot);
+        mBtnFollowShot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mVideoInfoReader == null){
+                    mVideoInfoReader = TXVideoInfoReader.getInstance();
+                }
+                // 上报合唱
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VIDEO_CHORUS, TCUserMgr.getInstance().getUserId(), 0, "合唱事件", new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
 
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+
+                    }
+                });
+                // 合拍之前先下载视频
+                downloadVideo();
+            }
+        });
+        mDownloadProgressDialog = new ProgressDialog(this);
+        mDownloadProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // 设置进度条的形式为圆形转动的进度条
+        mDownloadProgressDialog.setCancelable(false);                           // 设置是否可以通过点击Back键取消
+        mDownloadProgressDialog.setCanceledOnTouchOutside(false);               // 设置在点击Dialog外是否取消Dialog进度条
 
         mVerticalViewPager = (VerticalViewPager) findViewById(R.id.vertical_view_pager);
         mVerticalViewPager.setOffscreenPageLimit(2);
@@ -173,6 +206,82 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
 
         mPagerAdapter = new MyPagerAdapter();
         mVerticalViewPager.setAdapter(mPagerAdapter);
+    }
+
+    private void downloadVideo() {
+        mDownloadProgressDialog.show();
+        TCVideoInfo tcVideoInfo = mTCLiveInfoList.get(mCurrentPosition);
+        File downloadFileFolder = new File(Environment.getExternalStorageDirectory(), TCConstants.OUTPUT_DIR_NAME);
+        File downloadFile = new File(downloadFileFolder, DownloadUtil.getNameFromUrl(tcVideoInfo.playurl));
+
+        if(downloadFile.exists()){
+            mDownloadProgressDialog.dismiss();
+            TXVideoEditConstants.TXVideoInfo txVideoInfo = mVideoInfoReader.getVideoFileInfo(downloadFile.getAbsolutePath());
+            startRecordActivity(downloadFile.getAbsolutePath(), (int) txVideoInfo.fps, txVideoInfo.audioSampleRate);
+            return;
+        }
+        mDownloadProgressDialog.setMessage("正在下载...");
+
+        DownloadUtil.get().download(tcVideoInfo.playurl, TCConstants.OUTPUT_DIR_NAME, new DownloadUtil.DownloadListener() {
+            @Override
+            public void onDownloadSuccess(final String path) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDownloadProgressDialog.dismiss();
+                        TXVideoEditConstants.TXVideoInfo txVideoInfo = mVideoInfoReader.getVideoFileInfo(path);
+                        startRecordActivity(path, (int) txVideoInfo.fps, txVideoInfo.audioSampleRate);
+                    }
+                });
+            }
+
+            @Override
+            public void onDownloading(final int progress) {
+                TXCLog.i(TAG, "downloadVideo, progress = " + progress);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDownloadProgressDialog.setMessage("正在下载..." + progress + "%");
+                    }
+                });
+            }
+
+            @Override
+            public void onDownloadFailed() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDownloadProgressDialog.dismiss();
+                        Toast.makeText(TCVodPlayerActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void startRecordActivity(String path, int fps, int audioSampleRate) {
+        if(fps <= 0){
+            fps = 20;
+        }
+        int audioSampleRateType = TXRecordCommon.AUDIO_SAMPLERATE_48000;
+        if(audioSampleRate == 8000){
+            audioSampleRateType = TXRecordCommon.AUDIO_SAMPLERATE_8000;
+        }else if(audioSampleRate == 16000){
+            audioSampleRateType = TXRecordCommon.AUDIO_SAMPLERATE_16000;
+        }else if(audioSampleRate == 32000){
+            audioSampleRateType = TXRecordCommon.AUDIO_SAMPLERATE_32000;
+        }else if(audioSampleRate == 44100){
+            audioSampleRateType = TXRecordCommon.AUDIO_SAMPLERATE_44100;
+        }else{
+            audioSampleRateType = TXRecordCommon.AUDIO_SAMPLERATE_48000;
+        }
+        Intent intent = new Intent(TCVodPlayerActivity.this, TCVideoRecordActivity.class);
+        intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT);
+        intent.putExtra(TCConstants.VIDEO_EDITER_PATH, path);
+        intent.putExtra(TCConstants.VIDEO_RECORD_DURATION, mTXVodPlayer.getDuration());
+        intent.putExtra(TCConstants.VIDEO_RECORD_AUDIO_SAMPLE_RATE_TYPE, audioSampleRateType);
+        intent.putExtra(TCConstants.RECORD_CONFIG_FPS, fps);
+        startActivity(intent);
     }
 
     class MyPagerAdapter extends PagerAdapter {
@@ -378,7 +487,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
             if (mTXVodPlayer == player) {
                 TXLog.i(TAG, "onPlayEvent, event I FRAME, player = " + player);
                 mIvCover.setVisibility(View.GONE);
-                TCUserMgr.getInstance().uploadLogs("vodplay", TCUserMgr.getInstance().getUserId(), event, "点播播放成功", new Callback() {
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VOD_PLAY, TCUserMgr.getInstance().getUserId(), event, "点播播放成功", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                     }
@@ -421,7 +530,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
                         desc = "获取点播文件信息失败";
                         break;
                 }
-                TCUserMgr.getInstance().uploadLogs("vodplay", TCUserMgr.getInstance().getUserId(), event, desc, new Callback() {
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VOD_PLAY, TCUserMgr.getInstance().getUserId(), event, desc, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.i(TAG, "onFailure");

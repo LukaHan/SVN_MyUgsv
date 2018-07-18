@@ -10,6 +10,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class TCSplashActivity extends Activity {
         Log.i("splash", "firstRun:" + firstRun);
         if (firstRun) {
             saveFirstRun(this);
-            TCUserMgr.getInstance().uploadLogs("install", TCUserMgr.getInstance().getUserId(), 0, "首次安装成功", new Callback() {
+            TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_INSTALL, TCUserMgr.getInstance().getUserId(), 0, "首次安装成功", new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
 

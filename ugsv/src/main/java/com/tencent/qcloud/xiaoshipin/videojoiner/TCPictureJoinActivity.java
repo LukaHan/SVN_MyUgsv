@@ -17,11 +17,9 @@ import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.widget.VideoWorkProgressFragment;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoCutterActivity;
-import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerActivity;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerWrapper;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.PlayState;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.TCEditerUtil;
-import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 
@@ -256,7 +254,7 @@ public class TCPictureJoinActivity extends FragmentActivity implements TCVideoEd
                     startCutActivity();
                 }
                 mCurrentState = PlayState.STATE_NONE;
-                TCUserMgr.getInstance().uploadLogs("pictureedit", TCUserMgr.getInstance().getUserId(), result.retCode, result.descMsg, new Callback() {
+                TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_PICTURE_EDIT, TCUserMgr.getInstance().getUserId(), result.retCode, result.descMsg, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
 

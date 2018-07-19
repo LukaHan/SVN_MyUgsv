@@ -56,7 +56,7 @@ import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoEditer;
 import com.tencent.ugc.TXVideoInfoReader;
 import com.tencent.ugc.TXVideoJoiner;
-import com.umeng.socialize.UMShareAPI;
+//import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -1212,7 +1212,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         /** attention to this below ,must add this**/
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         if (requestCode != TCConstants.ACTIVITY_BGM_REQUEST_CODE) {
             return;
         }

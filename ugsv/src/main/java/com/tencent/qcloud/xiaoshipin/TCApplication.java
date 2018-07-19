@@ -39,6 +39,7 @@ public class TCApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
         initSDK();
 
         //配置分享第三方平台的appkey

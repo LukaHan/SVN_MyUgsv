@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.tencent.bugly.crashreport.CrashReport;
+//import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCHttpEngine;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.rtmp.TXLiveBase;
 import com.tencent.ugc.TXUGCBase;
-import com.umeng.socialize.PlatformConfig;
+//import com.umeng.socialize.PlatformConfig;
 
 import java.io.IOException;
 
@@ -43,9 +43,9 @@ public class TCApplication extends MultiDexApplication {
         initSDK();
 
         //配置分享第三方平台的appkey
-        PlatformConfig.setWeixin(TCConstants.WEIXIN_SHARE_ID, TCConstants.WEIXIN_SHARE_SECRECT);
-        PlatformConfig.setSinaWeibo(TCConstants.SINA_WEIBO_SHARE_ID, TCConstants.SINA_WEIBO_SHARE_SECRECT, TCConstants.SINA_WEIBO_SHARE_REDIRECT_URL);
-        PlatformConfig.setQQZone(TCConstants.QQZONE_SHARE_ID, TCConstants.QQZONE_SHARE_SECRECT);
+//        PlatformConfig.setWeixin(TCConstants.WEIXIN_SHARE_ID, TCConstants.WEIXIN_SHARE_SECRECT);
+//        PlatformConfig.setSinaWeibo(TCConstants.SINA_WEIBO_SHARE_ID, TCConstants.SINA_WEIBO_SHARE_SECRECT, TCConstants.SINA_WEIBO_SHARE_REDIRECT_URL);
+//        PlatformConfig.setQQZone(TCConstants.QQZONE_SHARE_ID, TCConstants.QQZONE_SHARE_SECRECT);
 //        mRefWatcher = LeakCanary.install(this);
         // 短视频licence设置
         TXUGCBase.getInstance().setLicence(this, ugcLicenceUrl, ugcKey);
@@ -79,9 +79,9 @@ public class TCApplication extends MultiDexApplication {
      */
     public void initSDK() {
         //启动bugly组件，bugly组件为腾讯提供的用于crash上报和分析的开放组件，如果您不需要该组件，可以自行移除
-        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
-        strategy.setAppVersion(TXLiveBase.getSDKVersionStr());
-        CrashReport.initCrashReport(getApplicationContext(), TCConstants.BUGLY_APPID, true, strategy);
+//        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
+//        strategy.setAppVersion(TXLiveBase.getSDKVersionStr());
+//        CrashReport.initCrashReport(getApplicationContext(), TCConstants.BUGLY_APPID, true, strategy);
 
         //设置rtmpsdk log回调，将log保存到文件
 //        TXLiveBase.setListener(new TCLog(getApplicationContext()));

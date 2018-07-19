@@ -99,6 +99,10 @@
             android:name="com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tencent.qcloud.xiaoshipin.mainui.TCMainVpActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.tencent.qcloud.xiaoshipin.play.TCVodPlayerActivity"

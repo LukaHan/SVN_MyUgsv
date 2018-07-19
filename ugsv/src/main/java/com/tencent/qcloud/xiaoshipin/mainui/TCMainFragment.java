@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.tencent.qcloud.xiaoshipin.R;
@@ -20,6 +23,7 @@ import com.tencent.qcloud.xiaoshipin.common.widget.ShortVideoDialog;
 import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveListFragment;
+import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveVideoListFragment;
 import com.tencent.qcloud.xiaoshipin.userinfo.TCUserInfoFragment;
 
 import java.io.File;
@@ -28,7 +32,7 @@ import java.io.IOException;
 /**
  * 主界面: 短视频列表，用户信息页
  */
-public class TCMainActivity extends FragmentActivity implements View.OnClickListener {
+public class TCMainFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TCMainActivity";
 
     private Button mBtnVideo, mBtnSelect, mBtnUser;
@@ -39,10 +43,19 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
 
     private ShortVideoDialog mShortVideoDialog;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_tc);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main_tc,container,false);
+        mBtnVideo = (Button) view.findViewById(R.id.btn_home_left);
+        mBtnSelect = (Button) view.findViewById(R.id.btn_home_select);
+        mBtnUser = (Button) view.findViewById(R.id.btn_home_right);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         initView();
 
@@ -59,9 +72,9 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
             String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
             //验证是否许可权限
             for (String str : permissions) {
-                if (this.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                if (getActivity().checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
                     //申请权限
-                    this.requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                    getActivity().requestPermissions(permissions, REQUEST_CODE_CONTACT);
                     return true;
                 }
             }
@@ -73,13 +86,13 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String sdcardFolder = getExternalFilesDir(null).getAbsolutePath();
+                String sdcardFolder = getActivity().getExternalFilesDir(null).getAbsolutePath();
                 File sdcardLicenceFile = new File(sdcardFolder + File.separator + TCConstants.UGC_LICENCE_NAME);
                 if(sdcardLicenceFile.exists()){
                     return;
                 }
                 try {
-                    FileUtils.copyFromAssetToSdcard(TCMainActivity.this, TCConstants.UGC_LICENCE_NAME, sdcardFolder);
+                    FileUtils.copyFromAssetToSdcard(getActivity(), TCConstants.UGC_LICENCE_NAME, sdcardFolder);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -90,24 +103,20 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
     private void initView() {
         mShortVideoDialog = new ShortVideoDialog();
 
-        mBtnVideo = (Button) findViewById(R.id.btn_home_left);
-        mBtnSelect = (Button) findViewById(R.id.btn_home_select);
-        mBtnUser = (Button) findViewById(R.id.btn_home_right);
-
         mBtnUser.setOnClickListener(this);
         mBtnVideo.setOnClickListener(this);
         mBtnSelect.setOnClickListener(this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (TextUtils.isEmpty(TCUserMgr.getInstance().getUserToken())) {
-            if (TCUtils.isNetworkAvailable(this) && TCUserMgr.getInstance().hasUser()) {
-                TCUserMgr.getInstance().autoLogin(null);
-            }
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (TextUtils.isEmpty(TCUserMgr.getInstance().getUserToken())) {
+//            if (TCUtils.isNetworkAvailable(this) && TCUserMgr.getInstance().hasUser()) {
+//                TCUserMgr.getInstance().autoLogin(null);
+//            }
+//        }
+//    }
 
     @Override
     public void onClick(View v) {
@@ -126,7 +135,7 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
 
     private void showSelect() {
         if (!TCUserMgr.getInstance().hasUser()) {
-            Intent intent = new Intent(TCMainActivity.this, TCLoginActivity.class);
+            Intent intent = new Intent(getActivity(), TCLoginActivity.class);
             startActivity(intent);
         } else {
             // 防止多次点击
@@ -135,7 +144,7 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
                 if (mShortVideoDialog.isAdded())
                     mShortVideoDialog.dismiss();
                 else
-                    mShortVideoDialog.show(getFragmentManager(), "");
+                    mShortVideoDialog.show(getActivity().getFragmentManager(), "");
             }
         }
     }
@@ -153,14 +162,16 @@ public class TCMainActivity extends FragmentActivity implements View.OnClickList
 //        mBtnVideo.setBackgroundResource(R.drawable.ic_home_video_selected);
 //        mBtnUser.setBackgroundResource(R.drawable.ic_user_normal);
         if (mTCLiveListFragment == null) {
-            mTCLiveListFragment = new TCLiveListFragment();
+//            mTCLiveListFragment = new TCLiveListFragment();
+            mTCLiveListFragment = new TCLiveVideoListFragment();
         }
         showFragment(mTCLiveListFragment, "live_list_fragment");
     }
 
     private void showFragment(Fragment fragment, String tag) {
         if (fragment == mCurrentFragment) return;
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         if (mCurrentFragment != null) {
             transaction.hide(mCurrentFragment);
         }

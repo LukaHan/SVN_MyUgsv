@@ -83,7 +83,7 @@ public class FloatTextProgressBar extends CustomProgressBar {
 
     private void init(AttributeSet attrs) {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.floatTextProgressBar);
-        fillColor = a.getColor(R.styleable.floatTextProgressBar_fillColor, 0xffff0000);
+        fillColor = a.getColor(R.styleable.floatTextProgressBar_fillColorUgsv, 0xffff0000);
         triangleColor = a.getColor(R.styleable.floatTextProgressBar_triangleColor, 0xffff0000);
         rectColor = a.getColor(R.styleable.floatTextProgressBar_rectColor, 0xffff0000);
         a.recycle();

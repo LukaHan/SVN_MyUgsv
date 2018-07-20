@@ -287,7 +287,7 @@ public class TCLayerOperationView extends View {
 
         TypedArray mTypedArray = getContext().obtainStyledAttributes(attrs, R.styleable.TCLayerOperationView);
 
-        Drawable srcDrawable = mTypedArray.getDrawable(R.styleable.TCLayerOperationView_src);
+        Drawable srcDrawable = mTypedArray.getDrawable(R.styleable.TCLayerOperationView_srcUgsv);
         mBitmap = drawable2Bitmap(srcDrawable);
 
         mFramePadding = mTypedArray.getDimensionPixelSize(R.styleable.TCLayerOperationView_framePadding, mFramePadding);

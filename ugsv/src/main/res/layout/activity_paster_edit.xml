@@ -146,7 +146,7 @@
                         android:paddingBottom="20dp"
                         android:visibility="visible"
                         app:backgroundColor="#d8d8d8"
-                        app:fillColor="@color/colorAccent"
+                        app:fillColorUgsv="@color/colorAccent"
                         app:rectColor="@color/colorAccent"
                         app:textColor="@color/white"
                         app:triangleColor="@color/colorAccent" />

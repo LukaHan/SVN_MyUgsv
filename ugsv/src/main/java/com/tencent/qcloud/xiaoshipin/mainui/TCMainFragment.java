@@ -22,8 +22,10 @@ import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
 import com.tencent.qcloud.xiaoshipin.common.widget.ShortVideoDialog;
 import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
+import com.tencent.qcloud.xiaoshipin.mainui.list.TCAttentionFragment;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveListFragment;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveVideoListFragment;
+import com.tencent.qcloud.xiaoshipin.mainui.list.TCMessageFragment;
 import com.tencent.qcloud.xiaoshipin.userinfo.TCUserInfoFragment;
 
 import java.io.File;
@@ -35,9 +37,9 @@ import java.io.IOException;
 public class TCMainFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TCMainActivity";
 
-    private Button mBtnVideo, mBtnSelect, mBtnUser;
+    private Button mBtnVideo, mBtnSelect, mBtnUser,mBtnAttention,mBtnMessage;
     private Fragment mCurrentFragment;
-    private Fragment mTCLiveListFragment, mTCUserInfoFragment;
+    private Fragment mTCLiveListFragment, mTCAttentionFragment,mTCMessageFragment,mTCUserInfoFragment;
 
     private long mLastClickPubTS = 0;
 
@@ -47,9 +49,11 @@ public class TCMainFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_tc,container,false);
-        mBtnVideo = (Button) view.findViewById(R.id.btn_home_left);
-        mBtnSelect = (Button) view.findViewById(R.id.btn_home_select);
-        mBtnUser = (Button) view.findViewById(R.id.btn_home_right);
+        mBtnVideo = (Button) view.findViewById(R.id.btn_home);
+        mBtnSelect = (Button) view.findViewById(R.id.btn_shot);
+        mBtnUser = (Button) view.findViewById(R.id.btn_mine);
+        mBtnAttention = (Button) view.findViewById(R.id.btn_attention);
+        mBtnMessage = (Button) view.findViewById(R.id.btn_message);
         return view;
     }
 
@@ -106,6 +110,8 @@ public class TCMainFragment extends Fragment implements View.OnClickListener {
         mBtnUser.setOnClickListener(this);
         mBtnVideo.setOnClickListener(this);
         mBtnSelect.setOnClickListener(this);
+        mBtnAttention.setOnClickListener(this);
+        mBtnMessage.setOnClickListener(this);
     }
 
 //    @Override
@@ -121,15 +127,29 @@ public class TCMainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.btn_home_left) {
+        if (i == R.id.btn_home) {
             showVideoFragment();
 
-        } else if (i == R.id.btn_home_select) {
+        } else if (i == R.id.btn_attention) {
+            if (mTCAttentionFragment == null) {
+                mTCAttentionFragment = new TCAttentionFragment();
+            }
+            showFragment(mTCAttentionFragment, "attention_fragment");
+
+        } else if (i == R.id.btn_shot) {
             showSelect();
 
-        } else if (i == R.id.btn_home_right) {
-            showUserFragment();
+        }else if (i == R.id.btn_message) {
+            if (mTCMessageFragment == null) {
+                mTCMessageFragment = new TCMessageFragment();
+            }
+            showFragment(mTCMessageFragment, "message_fragment");
 
+        }else if (i == R.id.btn_mine) {
+            if (mTCUserInfoFragment == null) {
+                mTCUserInfoFragment = new TCUserInfoFragment();
+            }
+            showFragment(mTCUserInfoFragment, "user_fragment");
         }
     }
 

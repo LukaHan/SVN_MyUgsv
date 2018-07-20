@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tencent.qcloud.xiaoshipin.R;
+import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveListFragment;
 import com.tencent.qcloud.xiaoshipin.userinfo.TCUserInfoFragment;
 
 /**
@@ -20,7 +21,7 @@ import com.tencent.qcloud.xiaoshipin.userinfo.TCUserInfoFragment;
 public class TCMainVpActivity extends FragmentActivity {
 
     private ViewPager mVpContent;
-    private Fragment mTCMainFragment, mTCUserInfoFragment;
+    private Fragment mTCMainFragment, mTCLiveListFragment;
     private Fragment[] mFragments;
 
     @Override
@@ -54,9 +55,9 @@ public class TCMainVpActivity extends FragmentActivity {
         mVpContent = (ViewPager) findViewById(R.id.vpContent);
 
         mTCMainFragment = new TCMainFragment();
-        mTCUserInfoFragment = new TCUserInfoFragment();
+        mTCLiveListFragment = new TCLiveListFragment();
 
-        mFragments = new Fragment[]{mTCMainFragment, mTCUserInfoFragment};
+        mFragments = new Fragment[]{mTCMainFragment, mTCLiveListFragment};
 
         mVpContent.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override

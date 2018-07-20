@@ -94,7 +94,7 @@ public class TCLiveVideoListFragment extends Fragment implements ITXVodPlayListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_player, container, false);
+        View view = inflater.inflate(R.layout.fragment_videolist_player, container, false);
 
         //新增获取数据
         reloadLiveList();
@@ -385,7 +385,7 @@ public class TCLiveVideoListFragment extends Fragment implements ITXVodPlayListe
             TXCLog.i(TAG, "MyPagerAdapter instantiateItem, position = " + position);
             TCVideoInfo tcLiveInfo = mTCLiveInfoList.get(position);
 
-            View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_player_content, null);
+            View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_player_content_fg, null);
             view.setId(position);
             // 封面
             ImageView coverImageView = (ImageView) view.findViewById(R.id.player_iv_cover);

@@ -23,6 +23,7 @@ import com.bumptech.glide.request.target.ViewTarget;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
 import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
+import com.tencent.qcloud.xiaoshipin.mainui.TCMainVpActivity;
 
 import org.json.JSONObject;
 
@@ -166,7 +167,8 @@ public class TCLoginActivity extends Activity {
      * 登录成功后被调用，跳转至TCMainActivity
      */
     private void jumpToHomeActivity() {
-        Intent intent = new Intent(this, TCMainActivity.class);
+//        Intent intent = new Intent(this, TCMainActivity.class);
+        Intent intent = new Intent(this, TCMainVpActivity.class);
         startActivity(intent);
         finish();
     }

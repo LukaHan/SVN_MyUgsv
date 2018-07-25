@@ -434,10 +434,13 @@ public class TCUserMgr {
                         mAccountType = serviceSig.optString("accountType");
                         mSdkAppID = serviceSig.optInt("sdkAppID");
                     }
-                    JSONObject serviceSig = data.optJSONObject("vod_info");
-                    mAppId = serviceSig.optString("Appid");
-                    mSubAppId = serviceSig.optString("SubAppId");
-                    mSecretId = serviceSig.optString("SecretId");
+
+                    if (data.has("vod_info")) {
+                        JSONObject serviceSig = data.optJSONObject("vod_info");
+                        mAppId = serviceSig.optString("Appid");
+                        mSubAppId = serviceSig.optString("SubAppId");
+                        mSecretId = serviceSig.optString("SecretId");
+                    }
 
                     JSONObject cosInfo = data.optJSONObject("cos_info");
                     mCosInfo.bucket = cosInfo.optString("Bucket");

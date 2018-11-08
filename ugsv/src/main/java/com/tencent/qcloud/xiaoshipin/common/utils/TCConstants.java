@@ -9,8 +9,10 @@ public class TCConstants {
     //小视频相关配置请参考:https://www.qcloud.com/document/product/454/7999
     //************在腾讯云开通各项服务后，将您的配置替换到如下的几个定义中************
     //业务Server的地址
-    public static final String APP_SVR_URL = "http://demo.vod2.myqcloud.com/lite/"; //如果您的服务器没有部署https证书，这里需要用http
+//    public static final String APP_SVR_URL = "http://demo.vod2.myqcloud.com/lite/"; //如果您的服务器没有部署https证书，这里需要用http
 //    public static final String APP_SVR_URL = "http://119.29.189.135/lite"; //测试
+    public static final String APP_SVR_URL = "http://212.129.144.91"; //大智慧
+
 
     public static final String SVR_POST_URL = "https://livedemo.tim.qq.com/interface.php";
     public static final String DEFAULT_ELK_HOST = "";

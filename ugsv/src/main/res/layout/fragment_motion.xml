@@ -101,7 +101,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/orginal" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_soul_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -133,7 +133,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/orginal" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_split_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -165,7 +165,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/orginal" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_light_wave_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -197,7 +197,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/orginal" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_black_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -229,7 +229,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_win_shaddow_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -261,7 +261,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_ghost_shaddow_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -293,7 +293,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_phantom_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -325,7 +325,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_ghost_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -357,7 +357,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_lightning_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -389,7 +389,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_mirror_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -421,7 +421,7 @@
                         android:background="@color/transparent"
                         android:src="@drawable/anim_effect3" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                         android:id="@+id/btn_illusion_select"
                         android:layout_width="50dp"
                         android:layout_height="50dp"

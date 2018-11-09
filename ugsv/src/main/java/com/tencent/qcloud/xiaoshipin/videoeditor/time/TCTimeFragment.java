@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.tencent.qcloud.xiaoshipin.R;
+import com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView;
 import com.tencent.qcloud.xiaoshipin.common.widget.VideoWorkProgressFragment;
 import com.tencent.qcloud.xiaoshipin.videoeditor.BaseEditFragment;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerWrapper;
@@ -20,8 +21,6 @@ import com.tencent.ugc.TXVideoEditer;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by hans on 2017/11/7.

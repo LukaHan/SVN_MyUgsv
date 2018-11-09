@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fr.castorflex.android.verticalviewpager.VerticalViewPager
+    <com.tencent.qcloud.xiaoshipin.common.widget.VerticalViewPager
         android:id="@+id/vertical_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -36,26 +36,5 @@
         android:textColor="@color/white"
         android:textSize="@dimen/h5" />
 
-    <!--<de.hdodenhof.circleimageview.CircleImageView-->
-        <!--android:id="@+id/player_civ_avatar"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:src="@drawable/face" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/player_tv_publisher_name"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginBottom="10dp"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_toRightOf="@id/player_civ_avatar"-->
-        <!--android:gravity="center"-->
-        <!--android:text="nick name"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="18sp" />-->
 
 </RelativeLayout>

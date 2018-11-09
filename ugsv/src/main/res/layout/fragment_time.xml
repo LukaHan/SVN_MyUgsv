@@ -27,7 +27,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/transparent" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                 android:id="@+id/time_tv_cancel_select"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -58,7 +58,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/transparent" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                 android:id="@+id/time_tv_speed_select"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -89,7 +89,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/transparent" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                 android:id="@+id/time_tv_repeat_select"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -120,7 +120,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/transparent" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
                 android:id="@+id/time_tv_reverse_select"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

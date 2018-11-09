@@ -27,6 +27,8 @@ import com.tencent.qcloud.xiaoshipin.common.activity.TCBaseActivity;
 import com.tencent.qcloud.xiaoshipin.common.utils.DownloadUtil;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
+import com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView;
+import com.tencent.qcloud.xiaoshipin.common.widget.VerticalViewPager;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveListFragment;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCVideoInfo;
@@ -47,8 +49,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;

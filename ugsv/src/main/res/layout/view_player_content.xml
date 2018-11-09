@@ -30,7 +30,7 @@
         <!--android:textColor="@color/colorTransparentGray"-->
         <!--/>-->
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
         android:id="@+id/player_civ_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"

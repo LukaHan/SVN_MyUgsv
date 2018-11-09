@@ -5,7 +5,7 @@
     android:layout_marginRight="20dp"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView
         android:id="@+id/add_paster_image"
         android:layout_width="50dp"
         android:layout_height="50dp"

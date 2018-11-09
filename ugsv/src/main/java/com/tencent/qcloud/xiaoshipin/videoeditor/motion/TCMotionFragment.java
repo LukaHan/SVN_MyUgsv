@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.xiaoshipin.R;
+import com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView;
 import com.tencent.qcloud.xiaoshipin.videoeditor.BaseEditFragment;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerWrapper;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEffectActivity;
@@ -24,8 +25,6 @@ import com.tencent.ugc.TXVideoEditer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by hans on 2017/11/7.

@@ -6,8 +6,6 @@ import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.activity.TCBaseActivity;
 
 public class TCVideoPublishActivity extends TCBaseActivity {
-    public TCVideoPublishActivity() {
-    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

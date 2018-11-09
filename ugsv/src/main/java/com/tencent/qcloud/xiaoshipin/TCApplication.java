@@ -1,17 +1,14 @@
 package com.tencent.qcloud.xiaoshipin;
 
 import android.app.Activity;
+import android.app.Application;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-//import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCHttpEngine;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
-import com.tencent.rtmp.TXLiveBase;
 import com.tencent.ugc.TXUGCBase;
-//import com.umeng.socialize.PlatformConfig;
 
 import java.io.IOException;
 
@@ -25,7 +22,7 @@ import okhttp3.Response;
  * 小视频应用类，用于全局的操作，如
  * sdk初始化,全局提示框
  */
-public class TCApplication extends MultiDexApplication {
+public class TCApplication extends Application {
 
 //    private RefWatcher mRefWatcher;
 

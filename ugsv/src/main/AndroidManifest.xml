@@ -207,15 +207,15 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".userinfo.TCAboutActivity" />
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.dzh.ugsv.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.dzh.ugsv.fileprovider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+                <!--android:resource="@xml/filepaths" />-->
+        <!--</provider>-->
 
         <uses-library
             android:name="com.google.android.maps"
@@ -240,6 +240,8 @@
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.UMDefault" />
+
+        <activity android:name=".videopublish.TCVideoPublishActivity" />
     </application>
 
 </manifest>

@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/editer_layout_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -21,7 +20,6 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/layout_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -56,7 +54,6 @@
     </FrameLayout>
 
     <com.tencent.qcloud.xiaoshipin.videoeditor.bgm.view.TCBGMPannel
-        android:id="@+id/tc_bgm_pannel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

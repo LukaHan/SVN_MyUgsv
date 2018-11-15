@@ -51,7 +51,6 @@
         </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/word_ll_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -111,13 +110,11 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/paster_ll_range"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/paster_tv_tip"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -126,7 +123,6 @@
                             android:textSize="@dimen/h6" />
 
                         <com.tencent.qcloud.xiaoshipin.videoeditor.common.widget.RangeSeekBar
-                            android:id="@+id/paster_sb_bar"
                             android:layout_width="match_parent"
                             android:layout_height="15dp"
                             android:layout_marginLeft="5dp"
@@ -138,7 +134,6 @@
                     </LinearLayout>
 
                     <com.tencent.qcloud.xiaoshipin.videoeditor.common.widget.progress.FloatTextProgressBar
-                        android:id="@+id/pb_player"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginLeft="5dp"
@@ -153,7 +148,6 @@
                 </FrameLayout>
 
                 <TextView
-                    android:id="@+id/paster_tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

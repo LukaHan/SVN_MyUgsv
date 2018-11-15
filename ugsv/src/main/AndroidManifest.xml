@@ -35,42 +35,6 @@
 
     <application>
 
-        <!-- 消息收发service -->
-        <service
-            android:name="com.tencent.qalsdk.service.QalService"
-            android:exported="false"
-            android:process=":QALSERVICE" />
-        <!-- 消息收发辅助service -->
-        <service
-            android:name="com.tencent.qalsdk.service.QalAssistService"
-            android:exported="false"
-            android:process=":QALSERVICE" />
-        <!-- 离线消息广播接收器 -->
-        <receiver
-            android:name="com.tencent.qalsdk.QALBroadcastReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.tencent.qalsdk.broadcast.qal" />
-            </intent-filter>
-        </receiver>
-        <!-- 系统消息广播接收器 -->
-        <receiver
-            android:name="com.tencent.qalsdk.core.NetConnInfoCenter"
-            android:process=":QALSERVICE">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.TIME_SET" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name="com.tencent.qcloud.xiaoshipin.play.TCVodPlayerActivity"
             android:screenOrientation="portrait"
@@ -91,50 +55,6 @@
             android:name="com.tencent.rtmp.video.TXScreenCapture$TXScreenCaptureAssistantActivity"
             android:theme="@android:style/Theme.Translucent" />
 
-        <!-- share sdk umeng begin -->
-        <!-- Share edit page-->
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.WBShareActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
-            android:configChanges="keyboardHidden|orientation"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
-
-        <!-- wechat callback-->
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!-- tencent -->
-        <activity
-            android:name="com.umeng.qq.tencent.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent101360044" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.umeng.qq.tencent.AssistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".videochoose.TCPictureChooseActivity"
             android:screenOrientation="portrait" />
@@ -168,11 +88,6 @@
             android:name="com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEffectActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.videojoiner.TCVideoJoinerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".userinfo.TCAboutActivity" />
 
         <!--<provider-->
         <!--android:name="android.support.v4.content.FileProvider"-->
@@ -188,25 +103,6 @@
             android:name="com.google.android.maps"
             android:required="false" />
         <uses-library android:name="android.test.runner" />
-
-        <!-- share sdk umeng end -->
-
-        <!-- umengAppKey，replace to yours -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="57fc8dc1e0f55a88800026ce"></meta-data>
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="Umeng"></meta-data>
-
-        <service
-            android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false"></service>
-
-        <activity
-            android:name="com.umeng.socialize.editorpage.ShareActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.UMDefault" />
 
         <activity android:name=".videopublish.TCVideoPublishActivity" />
         <activity android:name=".common.activity.FansAndCommentActivity" />

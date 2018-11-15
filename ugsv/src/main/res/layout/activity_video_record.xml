@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rl_play_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/editer_bottom"
@@ -9,7 +8,6 @@
     tools:ignore="contentDescription">
 
     <ImageView
-        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
@@ -126,7 +124,6 @@
                 android:layout_toRightOf="@id/compose_record_btn">
 
                 <ImageView
-                    android:id="@+id/btn_confirm"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentRight="true"
@@ -145,7 +142,6 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/autoLocateView"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_above="@id/layout_record_btns"
@@ -300,7 +296,6 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tv_music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_music_pannel"

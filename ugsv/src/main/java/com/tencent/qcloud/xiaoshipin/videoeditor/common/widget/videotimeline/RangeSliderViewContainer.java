@@ -3,12 +3,13 @@ package com.tencent.qcloud.xiaoshipin.videoeditor.common.widget.videotimeline;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 
 import java.util.Locale;
@@ -81,7 +82,7 @@ public class RangeSliderViewContainer extends LinearLayout{
         
         mDistance = videoProgressController.duration2Distance(mDurationMs);
 
-//        TXCLog.i(TAG, "init, mDistance = " + mDistance);
+//        Log.i(TAG, "init, mDistance = " + mDistance);
 
         ViewGroup.LayoutParams layoutParams = mMiddleView.getLayoutParams();
         layoutParams.width = mDistance;
@@ -106,13 +107,13 @@ public class RangeSliderViewContainer extends LinearLayout{
             public void onPostionChanged(float distance) {
                 long dtime = mVideoProgressController.distance2Duration(distance);
 
-                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView distance = %f, dtime = %d", distance, dtime));
+                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView distance = %f, dtime = %d", distance, dtime));
 
                 if(dtime > 0 && mDurationMs - dtime < 0){
                     dtime = mDurationMs;
                 }else if(dtime < 0 && (mStartTimeMs + dtime < 0) ){
                     dtime = -mStartTimeMs;
-//                    TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView dtime < 0 and < start time, dtime = %d", dtime));
+//                    Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView dtime < 0 and < start time, dtime = %d", dtime));
                 }
                 if(dtime == 0){
                     return;
@@ -123,7 +124,7 @@ public class RangeSliderViewContainer extends LinearLayout{
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mStartView.getLayoutParams();
                 int dx = layoutParams.leftMargin;
 
-                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView layoutParams.leftMargin = %d", layoutParams.leftMargin));
+                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mStartView layoutParams.leftMargin = %d", layoutParams.leftMargin));
 
                 changeStartViewLayoutParams();
                 dx = layoutParams.leftMargin - dx;
@@ -149,7 +150,7 @@ public class RangeSliderViewContainer extends LinearLayout{
             @Override
             public void onPostionChanged(float distance) {
                 long dtime = mVideoProgressController.distance2Duration(distance);
-//                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mEndView distance = %f, dtime = %d", distance, dtime));
+//                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mEndView distance = %f, dtime = %d", distance, dtime));
 
                 if(dtime < 0 && (mEndTimeMs + dtime - mStartTimeMs) < 0){
                     dtime = mStartTimeMs - mEndTimeMs;
@@ -164,7 +165,7 @@ public class RangeSliderViewContainer extends LinearLayout{
                 ViewGroup.LayoutParams layoutParams = mMiddleView.getLayoutParams();
                 layoutParams.width = mVideoProgressController.duration2Distance(mDurationMs);
 
-//                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mEndView dtime = %d, layoutParams.width = %d", dtime,  layoutParams.width));
+//                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mEndView dtime = %d, layoutParams.width = %d", dtime,  layoutParams.width));
 
                 mEndTimeMs = mEndTimeMs + dtime;
                 mMiddleView.setLayoutParams(layoutParams);
@@ -185,7 +186,7 @@ public class RangeSliderViewContainer extends LinearLayout{
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mStartView.getLayoutParams();
         layoutParams.leftMargin = mVideoProgressController.calculateStartViewPosition(this);
 
-//        TXCLog.i(TAG, String.format(Locale.getDefault(), "changeStartViewLayoutParams, layoutParams.leftMargin = %d", layoutParams.leftMargin));
+//        Log.i(TAG, String.format(Locale.getDefault(), "changeStartViewLayoutParams, layoutParams.leftMargin = %d", layoutParams.leftMargin));
 
         mStartView.setLayoutParams(layoutParams);
     }

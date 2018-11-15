@@ -40,7 +40,7 @@ public class TCVideoEditerListAdapter extends RecyclerView.Adapter<TCVideoEditer
         if (fileInfo.getFileType() == TCVideoFileInfo.FILE_TYPE_VIDEO) {
             holder.duration.setText(TCUtils.formattedTime(fileInfo.getDuration() / 1000));
         }
-        Glide.with(mContext).load(Uri.fromFile(new File(fileInfo.getFilePath()))).dontAnimate().into(holder.thumb);
+        Glide.with(mContext).load(Uri.fromFile(new File(fileInfo.getFilePath()))).into(holder.thumb);
         holder.thumb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

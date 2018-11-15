@@ -5,13 +5,15 @@ package com.tencent.qcloud.xiaoshipin.videoupload.impl;
  */
 
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.tencent.qcloud.core.auth.BasicLifecycleCredentialProvider;
 import com.tencent.qcloud.core.auth.BasicQCloudCredentials;
 import com.tencent.qcloud.core.auth.QCloudLifecycleCredentials;
 import com.tencent.qcloud.core.common.QCloudClientException;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
-import com.tencent.rtmp.TXLog;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,9 +84,9 @@ public class TVCNetworkCredentialProvider extends BasicLifecycleCredentialProvid
                     if (retData.has("keyTime")) {
                         keyTime = retData.getString("keyTime");
                     }
-                    TXLog.w(TAG, "xzb_process: get_cos_sign success");
+                    Log.w(TAG, "xzb_process: get_cos_sign success");
                 } else {
-                    TXLog.w(TAG, "xzb_process: get_cos_sign failure");
+                    Log.w(TAG, "xzb_process: get_cos_sign failure");
                 }
             }
             urlConnection.disconnect();

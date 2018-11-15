@@ -1,6 +1,7 @@
 package com.tencent.qcloud.xiaoshipin.common.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -17,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.rtmp.TXLog;
+
 
 import org.json.JSONObject;
 
@@ -145,7 +146,7 @@ public class TCHttpEngine {
 
         NetworkResponse response = error.networkResponse;
         if (response != null) {
-            TXLog.w(TAG,"HTTP Req error, error code:"+response.statusCode);
+            Log.w(TAG,"HTTP Req error, error code:"+response.statusCode);
             switch (response.statusCode) {
                 case 404:
                 case 422:

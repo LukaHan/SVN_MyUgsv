@@ -62,7 +62,7 @@ public class SliderViewContainer extends LinearLayout {
             public void onPostionChanged(float distance) {
                 long dtime = mVideoProgressController.distance2Duration(distance);
 
-//                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mSliderView distance = %f, dtime = %d", distance, dtime));
+//                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mSliderView distance = %f, dtime = %d", distance, dtime));
 
                 if (dtime > 0 && (mVideoProgressController.getTotalDurationMs() - mStartTimeMs) - dtime < 0) {
                     dtime = mVideoProgressController.getTotalDurationMs() - mStartTimeMs;
@@ -76,7 +76,7 @@ public class SliderViewContainer extends LinearLayout {
                 mStartTimeMs = mStartTimeMs + dtime;
                 changeLayoutParams();
 
-//                TXCLog.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mSliderView layoutParams.leftMargin = %d", layoutParams.leftMargin));
+//                Log.i(TAG, String.format(Locale.getDefault(), "onPostionChanged, mSliderView layoutParams.leftMargin = %d", layoutParams.leftMargin));
             }
 
             @Override

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.videoeditor.BaseEditFragment;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerWrapper;
@@ -372,7 +372,7 @@ public class TCBubbleFragment extends BaseEditFragment implements BaseRecyclerAd
             rect.x = view.getImageX();
             rect.y = view.getImageY();
 
-            TXCLog.i(TAG, "addSubtitlesIntoVideo, subTitle x y = " + rect.x + "," + rect.y);
+            Log.i(TAG, "addSubtitlesIntoVideo, subTitle x y = " + rect.x + "," + rect.y);
 
             rect.width = view.getImageWidth();
             subTitle.frame = rect;

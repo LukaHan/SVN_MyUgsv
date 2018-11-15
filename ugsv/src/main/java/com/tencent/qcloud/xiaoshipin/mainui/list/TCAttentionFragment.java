@@ -1,14 +1,21 @@
 package com.tencent.qcloud.xiaoshipin.mainui.list;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.tencent.qcloud.xiaoshipin.R;
 
 /**
- * 短视频列表页面
- * 界面展示使用：GridView+SwipeRefreshLayout
- * 列表数据Adapter：TCLiveListAdapter, TCUGCVideoListAdapter
- * 数据获取接口： TCLiveListMgr
+ * 关注页
  */
 public class TCAttentionFragment extends Fragment {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_attention, container, false);
+        return view;
+    }
 
 }

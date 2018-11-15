@@ -1,22 +1,15 @@
 package com.tencent.qcloud.xiaoshipin.common.activity;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-
-import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
-import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
+import android.support.v4.app.FragmentActivity;
+import android.view.Window;
 
 /**
  * base activity to handle relogin info
  * Created by Administrator on 2016/9/20
  */
-public class TCBaseActivity extends Activity {
+public class TCBaseActivity extends FragmentActivity {
 
     private static final String TAG = TCBaseActivity.class.getSimpleName();
 
@@ -26,6 +19,7 @@ public class TCBaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         mErrDlgFragment = new ErrorDialogFragment();
     }

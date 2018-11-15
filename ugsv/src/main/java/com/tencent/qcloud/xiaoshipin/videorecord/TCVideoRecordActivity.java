@@ -23,6 +23,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -38,7 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.activity.TCBaseActivity;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
@@ -48,7 +49,7 @@ import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoPreprocessActivity;
 import com.tencent.qcloud.xiaoshipin.videoeditor.bgm.BGMSelectActivity;
 import com.tencent.qcloud.xiaoshipin.videoeditor.bgm.view.TCBGMPannel;
 import com.tencent.rtmp.TXLiveConstants;
-import com.tencent.rtmp.TXLog;
+
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
 import com.tencent.ugc.TXUGCRecord;
@@ -203,7 +204,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
     private void getData() {
         Intent intent = getIntent();
         if (intent == null) {
-            TXCLog.e(TAG, "intent is null");
+            Log.e(TAG, "intent is null");
             return;
         }
 
@@ -421,11 +422,11 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
                     mAspectSelectShow = !mAspectSelectShow;
                 }
                 if (!mRecording || mTXCameraRecord.getPartsManager().getPartsPathList().size() == 0) {
-                    TXCLog.i(TAG, "startRecord");
+                    Log.i(TAG, "startRecord");
                     mTXCameraRecord.setRecordSpeed(mRecordSpeed);
                     startRecord();
                 } else if (mPause) {
-                    TXCLog.i(TAG, "resumeRecord");
+                    Log.i(TAG, "resumeRecord");
                     resumeRecord();
                 }
             }
@@ -433,7 +434,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
             @Override
             public void onButtonPause() {
                 if (mRecording && !mPause) {
-                    TXCLog.i(TAG, "pauseRecord");
+                    Log.i(TAG, "pauseRecord");
                     pauseRecord();
                 }
             }
@@ -581,7 +582,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
         if(mRecordType == TCConstants.VIDEO_RECORD_TYPE_FOLLOW_SHOT){
             initPlayer();
             mTXVideoEditer.startPlayFromTime(0, mFollowShotVideoDuration);
-            TXCLog.i(TAG, "onStart, mTXVideoEditer.startPlayFromTime");
+            Log.i(TAG, "onStart, mTXVideoEditer.startPlayFromTime");
         }
     }
 
@@ -673,7 +674,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
                 mIvTorch.setVisibility(View.VISIBLE);
             }
             if (mTXCameraRecord != null) {
-                TXCLog.i(TAG, "switchCamera = " + mFront);
+                Log.i(TAG, "switchCamera = " + mFront);
                 mTXCameraRecord.switchCamera(mFront);
             }
 
@@ -912,7 +913,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
                 mTXCameraRecord.pauseBGM();
             }
             int stopResult = mTXCameraRecord.pauseRecord();
-            TXLog.i(TAG, "pauseRecord, result = " + stopResult);
+            Log.i(TAG, "pauseRecord, result = " + stopResult);
         }
         abandonAudioFocus();
 
@@ -1022,7 +1023,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
             mBGMDuration = mTXCameraRecord.setBGM(mBGMPath);
             mTXCameraRecord.playBGMFromTime((int) mBGMStartTime, (int) mBgmEndTime);
             mBGMPlayingPath = mBGMPath;
-            TXCLog.i(TAG, "music duration = " + mTXCameraRecord.getMusicDuration(mBGMPath));
+            Log.i(TAG, "music duration = " + mTXCameraRecord.getMusicDuration(mBGMPath));
         }
 
         mRecording = true;
@@ -1182,7 +1183,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
 
     @Override
     public void onRecordEvent(int event, Bundle param) {
-        TXCLog.d(TAG, "onRecordEvent event id = " + event);
+        Log.d(TAG, "onRecordEvent event id = " + event);
         if (event == TXRecordCommon.EVT_ID_PAUSE) {
             mRecordProgressView.clipComplete();
         } else if (event == TXRecordCommon.EVT_CAMERA_CANNOT_USE) {
@@ -1252,7 +1253,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
 
             }
         });
-        TXCLog.i(TAG, "onRecordComplete, result retCode = " + result.retCode + ", descMsg = " + result.descMsg + ", videoPath = " + result.videoPath + ", coverPath = " + result.coverPath);
+        Log.i(TAG, "onRecordComplete, result retCode = " + result.retCode + ", descMsg = " + result.descMsg + ", videoPath = " + result.videoPath + ", coverPath = " + result.coverPath);
         if (result.retCode < 0) {
             mCompleteProgressDialog.dismiss();
             mRecording = false;
@@ -1329,7 +1330,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
 
     @Override
     public void onJoinProgress(final float progress) {
-        TXCLog.i(TAG, "onJoinProgress, progress = " + progress);
+        Log.i(TAG, "onJoinProgress, progress = " + progress);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -1410,7 +1411,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
                 @Override
                 public void onAudioFocusChange(int focusChange) {
                     try {
-                        TXCLog.i(TAG, "requestAudioFocus, onAudioFocusChange focusChange = " + focusChange);
+                        Log.i(TAG, "requestAudioFocus, onAudioFocusChange focusChange = " + focusChange);
 
                         if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                             pauseRecord();
@@ -1499,7 +1500,7 @@ public class TCVideoRecordActivity extends TCBaseActivity implements View.OnClic
     public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
         int maxZoom = mTXCameraRecord.getMaxZoom();
         if (maxZoom == 0) {
-            TXCLog.i(TAG, "camera not support zoom");
+            Log.i(TAG, "camera not support zoom");
             return false;
         }
 

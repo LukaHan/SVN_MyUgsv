@@ -31,10 +31,6 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.PermissionChecker;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -44,13 +40,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.tencent.qcloud.xiaoshipin.R;
-import com.tencent.qcloud.xiaoshipin.login.TCLoginActivity;
-import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
-import com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -454,7 +444,8 @@ public class TCUtils {
                 view.setImageResource(defResId);
             } else {
                 RequestManager req = Glide.with(context);
-                req.load(url).placeholder(defResId).transform(new TCGlideCircleTransform(context)).into(view);
+//                req.load(url).placeholder(defResId).transform(new TCGlideCircleTransform(context)).into(view);
+                req.load(url).into(view);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -473,25 +464,25 @@ public class TCUtils {
         if (TextUtils.isEmpty(url)) {
             view.setImageResource(defResId);
         } else {
-            Glide.with(context.getApplicationContext())
-                .load(url)
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL) {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                        if (resource == null) {
-                            return;
-                        }
-
-                        final Bitmap bitmap = blurBitmap(resource, context.getApplicationContext());
-                        view.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.setImageBitmap(bitmap);
-                            }
-                        });
-                    }
-                });
+//            Glide.with(context.getApplicationContext())
+//                .load(url)
+//                .asBitmap()
+//                .into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL) {
+//                    @Override
+//                    public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+//                        if (resource == null) {
+//                            return;
+//                        }
+//
+//                        final Bitmap bitmap = blurBitmap(resource, context.getApplicationContext());
+//                        view.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                view.setImageBitmap(bitmap);
+//                            }
+//                        });
+//                    }
+//                });
         }
     }
 

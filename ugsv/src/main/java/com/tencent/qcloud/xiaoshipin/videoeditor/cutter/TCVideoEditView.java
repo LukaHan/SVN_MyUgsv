@@ -7,16 +7,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.videoeditor.time.view.RangeSlider;
 import com.tencent.qcloud.xiaoshipin.videoeditor.time.view.TCVideoEditerAdapter;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.Edit;
-import com.tencent.rtmp.TXLog;
+
 import com.tencent.ugc.TXVideoEditConstants;
 
 public class TCVideoEditView extends RelativeLayout implements RangeSlider.OnRangeChangeListener {
@@ -46,7 +47,7 @@ public class TCVideoEditView extends RelativeLayout implements RangeSlider.OnRan
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            TXCLog.i(TAG, "onScrollStateChanged, new state = " + newState);
+            Log.i(TAG, "onScrollStateChanged, new state = " + newState);
 
             switch (newState) {
                 case RecyclerView.SCROLL_STATE_IDLE:
@@ -120,7 +121,7 @@ public class TCVideoEditView extends RelativeLayout implements RangeSlider.OnRan
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         int width = count * mSingleThumbnailWidth;
         mAllThumbnailWidth = width;
-//        TXCLog.i(TAG, "setCount, mAllThumbnailWidth = " + mAllThumbnailWidth);
+//        Log.i(TAG, "setCount, mAllThumbnailWidth = " + mAllThumbnailWidth);
         Resources resources = getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         int screenWidth = dm.widthPixels;
@@ -161,7 +162,7 @@ public class TCVideoEditView extends RelativeLayout implements RangeSlider.OnRan
 
     public void addBitmap(int index, Bitmap bitmap) {
         mAdapter.add(index, bitmap);
-//        TXCLog.i(TAG, "addBitmap, recylerview width = " + mRecyclerView.getWidth());
+//        Log.i(TAG, "addBitmap, recylerview width = " + mRecyclerView.getWidth());
     }
 
     @Override
@@ -175,7 +176,7 @@ public class TCVideoEditView extends RelativeLayout implements RangeSlider.OnRan
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mAdapter != null) {
-            TXLog.i(TAG, "onDetachedFromWindow: 清除所有bitmap");
+            Log.i(TAG, "onDetachedFromWindow: 清除所有bitmap");
             mAdapter.clearAllBitmap();
         }
     }
@@ -198,7 +199,7 @@ public class TCVideoEditView extends RelativeLayout implements RangeSlider.OnRan
         mVideoStartPos = mStartTime + mViewLeftTime;
         mVideoEndPos = mStartTime + mViewRightTime;
 
-//        TXCLog.i(TAG, "mVideoStartPos, mVideoEndPos = " + mVideoStartPos + ", " + mVideoEndPos);
+//        Log.i(TAG, "mVideoStartPos, mVideoEndPos = " + mVideoStartPos + ", " + mVideoEndPos);
 
         if (mRangeChangeListener != null) {
             mRangeChangeListener.onCutChangeKeyUp((int) mVideoStartPos, (int) mVideoEndPos, 0);

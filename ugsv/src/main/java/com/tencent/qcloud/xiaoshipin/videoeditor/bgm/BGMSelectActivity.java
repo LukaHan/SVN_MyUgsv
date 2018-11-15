@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerActivity;
@@ -135,7 +135,7 @@ public class BGMSelectActivity extends Activity implements SwipeRefreshLayout.On
             public void onItemClick(View view, int position) {
                 TCBGMInfo tcBgmInfo = mTCBgmInfoList.get(position);
                 mTCMusicAdapter.changeUseSelection(position);
-                TXCLog.i(TAG, "tcBgmInfo name = " + tcBgmInfo.name + ", url = " + tcBgmInfo.url);
+                Log.i(TAG, "tcBgmInfo name = " + tcBgmInfo.name + ", url = " + tcBgmInfo.url);
                 if (TextUtils.isEmpty(tcBgmInfo.localPath)) {
                     downloadBgmInfo(position, tcBgmInfo);
                     return;
@@ -157,7 +157,7 @@ public class BGMSelectActivity extends Activity implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        TXCLog.i(TAG, "onRefresh");
+        Log.i(TAG, "onRefresh");
         reloadBGMList();
     }
 

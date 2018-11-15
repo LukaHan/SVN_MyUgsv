@@ -43,7 +43,7 @@ public class TCUGCVideoListAdapter extends BaseRecyclerAdapter<TCUGCVideoListAda
             holder.ivCover.setImageResource(R.drawable.bg_ugc);
         } else {
             RequestManager req = Glide.with(holder.itemView.getContext());
-            req.load(cover).placeholder(R.drawable.bg_ugc).into(holder.ivCover);
+            req.load(cover).into(holder.ivCover);
         }
         //主播头像
         TCUtils.showPicWithUrl(holder.itemView.getContext(), holder.ivAvatar, data.headpic, R.drawable.face);

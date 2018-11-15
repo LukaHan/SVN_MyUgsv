@@ -7,7 +7,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.tencent.qcloud.xiaoshipin.TCApplication;
+import com.tencent.qcloud.xiaoshipin.Ugsv;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -38,7 +38,7 @@ public class VideoUtil {
 
     //TODO
     public static Context getContext(){
-        return TCApplication.getApplication();
+        return Ugsv.getApplication();
     }
 
     public VideoUtil() {

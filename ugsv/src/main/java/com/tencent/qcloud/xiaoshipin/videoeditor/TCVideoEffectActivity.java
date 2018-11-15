@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
@@ -90,14 +91,14 @@ public class TCVideoEffectActivity extends FragmentActivity implements
     private VideoProgressController.VideoProgressSeekListener mVideoProgressSeekListener = new VideoProgressController.VideoProgressSeekListener() {
         @Override
         public void onVideoProgressSeek(long currentTimeMs) {
-            TXCLog.i(TAG, "onVideoProgressSeek, currentTimeMs = " + currentTimeMs);
+            Log.i(TAG, "onVideoProgressSeek, currentTimeMs = " + currentTimeMs);
 
             previewAtTime(currentTimeMs);
         }
 
         @Override
         public void onVideoProgressSeekFinish(long currentTimeMs) {
-            TXCLog.i(TAG, "onVideoProgressSeekFinish, currentTimeMs = " + currentTimeMs);
+            Log.i(TAG, "onVideoProgressSeekFinish, currentTimeMs = " + currentTimeMs);
 
             previewAtTime(currentTimeMs);
         }
@@ -365,7 +366,7 @@ public class TCVideoEffectActivity extends FragmentActivity implements
 
     @Override // 预览完成回调
     public void onPreviewFinishedWrapper() {
-        TXCLog.d(TAG, "---------------onPreviewFinished-----------------");
+        Log.d(TAG, "---------------onPreviewFinished-----------------");
         isPreviewFinish = true;
         stopPlay();
         if ((mMotionFragment != null && mMotionFragment.isAdded() && !mMotionFragment.isHidden()) ||
@@ -457,7 +458,7 @@ public class TCVideoEffectActivity extends FragmentActivity implements
             finish();
 
         } else if (i == R.id.iv_play) {
-            TXCLog.i(TAG, "editer_ib_play clicked, mCurrentState = " + mCurrentState);
+            Log.i(TAG, "editer_ib_play clicked, mCurrentState = " + mCurrentState);
             switchPlayVideo();
 
         }

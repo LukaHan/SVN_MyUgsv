@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.FileUtils;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoEditerWrapper;
@@ -334,7 +334,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
         mVideoProgressSeekListener = new VideoProgressController.VideoProgressSeekListener() {
             @Override
             public void onVideoProgressSeek(long currentTimeMs) {
-                TXCLog.i(TAG, "onVideoProgressSeek, currentTimeMs = " + currentTimeMs);
+                Log.i(TAG, "onVideoProgressSeek, currentTimeMs = " + currentTimeMs);
                 if (TCVideoEditerWrapper.getInstance().isReverse()) {
                     currentTimeMs = mTXVideoInfo.duration - currentTimeMs;
                 }
@@ -346,7 +346,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
 
             @Override
             public void onVideoProgressSeekFinish(long currentTimeMs) {
-                TXCLog.i(TAG, "onVideoProgressSeekFinish, currentTimeMs = " + currentTimeMs);
+                Log.i(TAG, "onVideoProgressSeekFinish, currentTimeMs = " + currentTimeMs);
                 if (TCVideoEditerWrapper.getInstance().isReverse()) {
                     currentTimeMs = mTXVideoInfo.duration - currentTimeMs;
                 }
@@ -364,7 +364,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
         try {
             String jsonString = FileUtils.getJsonFromFile(filePath);
             if (TextUtils.isEmpty(jsonString)) {
-                TXCLog.e(TAG, "getPasterInfoList, jsonString is empty");
+                Log.e(TAG, "getPasterInfoList, jsonString is empty");
                 return pasterInfoList;
             }
             JSONObject pasterJson = new JSONObject(jsonString);
@@ -461,7 +461,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
             rect.x = view.getImageX();
             rect.y = view.getImageY();
             rect.width = view.getImageWidth();
-            TXCLog.i(TAG, "addPasterListVideo, adjustPasterRect, paster x y = " + rect.x + "," + rect.y);
+            Log.i(TAG, "addPasterListVideo, adjustPasterRect, paster x y = " + rect.x + "," + rect.y);
 
             int childType = view.getChildType();
             if (childType == PasterOperationView.TYPE_CHILD_VIEW_ANIMATED_PASTER) {
@@ -474,7 +474,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
                 txAnimatedPaster.rotation = view.getImageRotate();
 
                 animatedPasterList.add(txAnimatedPaster);
-                TXCLog.i(TAG, "addPasterListVideo, txAnimatedPaster startTimeMs, endTime is : " + txAnimatedPaster.startTime + ", " + txAnimatedPaster.endTime);
+                Log.i(TAG, "addPasterListVideo, txAnimatedPaster startTimeMs, endTime is : " + txAnimatedPaster.startTime + ", " + txAnimatedPaster.endTime);
             } else if (childType == PasterOperationView.TYPE_CHILD_VIEW_PASTER) {
                 TXVideoEditConstants.TXPaster txPaster = new TXVideoEditConstants.TXPaster();
 
@@ -484,7 +484,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
                 txPaster.frame = rect;
 
                 pasterList.add(txPaster);
-                TXCLog.i(TAG, "addPasterListVideo, txPaster startTimeMs, endTime is : " + txPaster.startTime + ", " + txPaster.endTime);
+                Log.i(TAG, "addPasterListVideo, txPaster startTimeMs, endTime is : " + txPaster.startTime + ", " + txPaster.endTime);
             }
         }
         mTXVideoEditer.setAnimatedPasterList(animatedPasterList);
@@ -566,13 +566,13 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onEditClick() {
-        TXCLog.i(TAG, "onEditClick");
+        Log.i(TAG, "onEditClick");
         addPasterListVideo();
     }
 
     @Override
     public void onRotateClick() {
-        TXCLog.i(TAG, "onRotateClick");
+        Log.i(TAG, "onRotateClick");
         addPasterListVideo();
     }
 
@@ -613,7 +613,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
         if (pasterType == PasterOperationView.TYPE_CHILD_VIEW_ANIMATED_PASTER) {
             AnimatedPasterConfig animatedPasterConfig = getAnimatedPasterParamFromPath(mAnimatedPasterSDcardFolder + tcPasterInfo.getName() + File.separator);
             if (animatedPasterConfig == null) {
-                TXCLog.e(TAG, "onItemClick, animatedPasterConfig is null");
+                Log.e(TAG, "onItemClick, animatedPasterConfig is null");
                 return;
             }
             int keyFrameIndex = animatedPasterConfig.keyframe;
@@ -661,13 +661,13 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
      * 将贴纸控件的相关参数保存到Manager中去，方便出去之后可以重新进来再次编辑贴纸
      */
     private void saveIntoManager() {
-        TXCLog.i(TAG, "saveIntoManager");
+        Log.i(TAG, "saveIntoManager");
         TCPasterViewInfoManager manager = TCPasterViewInfoManager.getInstance();
         manager.clear();
         for (int i = 0; i < mTCLayerViewGroup.getChildCount(); i++) {
             PasterOperationView view = (PasterOperationView) mTCLayerViewGroup.getOperationView(i);
 
-            TXCLog.i(TAG, "saveIntoManager, view centerX and centerY = " + view.getCenterX() + ", " + view.getCenterY() +
+            Log.i(TAG, "saveIntoManager, view centerX and centerY = " + view.getCenterX() + ", " + view.getCenterY() +
                     ", start end time = " + view.getStartTime() + ", " + view.getEndTime());
 
             TCPasterViewInfo info = new TCPasterViewInfo();
@@ -690,13 +690,13 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
      */
     private void recoverFromManager() {
         TCPasterViewInfoManager manager = TCPasterViewInfoManager.getInstance();
-        TXCLog.i(TAG, "recoverFromManager, manager.size = " + manager.getSize());
+        Log.i(TAG, "recoverFromManager, manager.size = " + manager.getSize());
         for (int i = 0; i < manager.getSize(); i++) {
             TCPasterViewInfo info = manager.get(i);
             Bitmap pasterBitmap = BitmapFactory.decodeFile(info.getPasterPath());
-            TXCLog.i(TAG, "recoverFromManager, info.getPasterPath() = " + info.getPasterPath());
+            Log.i(TAG, "recoverFromManager, info.getPasterPath() = " + info.getPasterPath());
             if (pasterBitmap == null) {
-                TXCLog.e(TAG, "recoverFromManager, pasterBitmap is null!");
+                Log.e(TAG, "recoverFromManager, pasterBitmap is null!");
                 continue;
             }
             PasterOperationView view = TCPasterOperationViewFactory.newOperationView(TCPasterActivity.this);
@@ -732,7 +732,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
         String configJsonStr = FileUtils.getJsonFromFile(configPath);
 
         if (TextUtils.isEmpty(configJsonStr)) {
-            TXCLog.e(TAG, "getTXAnimatedPasterParamFromPath, configJsonStr is empty");
+            Log.e(TAG, "getTXAnimatedPasterParamFromPath, configJsonStr is empty");
             return animatedPasterConfig;
         }
 
@@ -744,7 +744,7 @@ public class TCPasterActivity extends Activity implements View.OnClickListener,
         }
 
         if (jsonObjectConfig == null) {
-            TXCLog.e(TAG, "getTXAnimatedPasterParamFromPath, jsonObjectConfig is null");
+            Log.e(TAG, "getTXAnimatedPasterParamFromPath, jsonObjectConfig is null");
             return animatedPasterConfig;
         }
 

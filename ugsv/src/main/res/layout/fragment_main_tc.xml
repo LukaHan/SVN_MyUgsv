@@ -1,75 +1,145 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <FrameLayout
         android:id="@+id/contentPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@id/fl_tab"
+        android:background="@color/white" />
+
     <LinearLayout
-        android:background="@color/black"
-        android:orientation="horizontal"
         android:id="@+id/fl_tab"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_home"
+        <RelativeLayout
+            android:id="@+id/rl_home"
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:background="@null"
-            android:text="首页"
-            android:textColor="@color/white"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btn_attention"
+            <TextView
+                android:id="@+id/btn_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:text="首页"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <View
+                android:id="@+id/v_home"
+                android:layout_width="29dp"
+                android:layout_height="2dp"
+                android:layout_below="@id/btn_home"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:background="@color/white" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_attention"
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:background="@null"
-            android:text="关注"
-            android:textColor="@color/white"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <Button
+            <TextView
+                android:id="@+id/btn_attention"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:text="关注"
+                android:textColor="@color/main_tab_unsel"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/v_attention"
+                android:layout_width="29dp"
+                android:layout_height="2dp"
+                android:layout_below="@id/btn_attention"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:background="@color/white"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <ImageButton
             android:id="@+id/btn_shot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:text="拍摄"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:background="@null"
-            android:textColor="@color/white"
-            android:layout_weight="1" />
+            android:src="@drawable/icon_shot"
+            android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/btn_message"
+        <RelativeLayout
+            android:id="@+id/rl_message"
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:background="@null"
-            android:text="消息"
-            android:textColor="@color/white"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btn_mine"
+            <TextView
+                android:id="@+id/btn_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:text="消息"
+                android:textColor="@color/main_tab_unsel"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/v_message"
+                android:layout_width="29dp"
+                android:layout_height="2dp"
+                android:layout_below="@id/btn_message"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:background="@color/white"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mine"
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:background="@null"
-            android:text="我"
-            android:textColor="@color/white"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_mine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:text="我"
+                android:textColor="@color/main_tab_unsel"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/v_mine"
+                android:layout_width="17dp"
+                android:layout_height="2dp"
+                android:layout_below="@id/btn_mine"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:background="@color/white"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
     </LinearLayout>
-    <!--<android.support.v4.app.FragmentTabHost-->
-    <!--android:id="@android:id/tabhost"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom"-->
-    <!--android:background="#1f2531"/>-->
 
 </RelativeLayout>

@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -68,11 +70,13 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
     private ProgressBar mProgressBar;
     private TextView mTvProgress;
     private RelativeLayout mLayoutResult;
+    private EditText etTitle;
+    private Button btPublish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_publisher2);
+        setContentView(R.layout.activity_video_publish);
 
         mVideoPath = getIntent().getStringExtra(TCConstants.VIDEO_RECORD_VIDEPATH);
         mCoverPath = getIntent().getStringExtra(TCConstants.VIDEO_RECORD_COVERPATH);
@@ -94,7 +98,10 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
 
         if (mCoverPath != null)
             Glide.with(this).load(Uri.fromFile(new File(mCoverPath))).into(mImageViewBg);
-        publishVideo();
+
+        etTitle = findViewById(R.id.et_title);
+        btPublish = findViewById(R.id.bt_publish);
+        btPublish.setOnClickListener(this);
     }
 
     private void fetchSignature() {
@@ -152,16 +159,15 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
         int i = view.getId();
         if (i == R.id.btn_back) {
             back();
-
-        } else if (i == R.id.btn_publish) {
+        } else if (i == R.id.bt_publish) {
+            btPublish.setClickable(false);
+            mTvProgress.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
             publishVideo();
-
         } else if (i == R.id.layout_publish_success) {
             Intent intent = new Intent(this, TCMainActivity.class);
             startActivity(intent);
             finish();
-
-        } else {
         }
     }
 
@@ -290,8 +296,7 @@ public class TCVideoPublisherActivity extends TCBaseActivity implements View.OnC
     }
 
     private void UploadUGCVideo(final String videoId, final String videoURL, final String coverURL) {
-//        String title = mTitleEditText.getText().toString();
-        String title = null; //TODO:传入本地视频文件名称
+        String title = etTitle.getText().toString();
         if (TextUtils.isEmpty(title)) {
             title = "小视频";
         }

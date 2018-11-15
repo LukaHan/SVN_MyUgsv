@@ -5,11 +5,12 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.Edit;
@@ -130,7 +131,7 @@ public class TCVideoRepeatView extends RelativeLayout {
 
         @Override
         public void onKeyUp(int type, int leftPinIndex, int rightPinIndex) {
-            TXCLog.e(TAG, "left:" + leftPinIndex + ",right:" + rightPinIndex);
+            Log.e(TAG, "left:" + leftPinIndex + ",right:" + rightPinIndex);
 
             if (type == RangeRepeatSlider.TYPE_MID) {
                 int leftTime = (int) (mVideoDuration * rightPinIndex / 100); //ms

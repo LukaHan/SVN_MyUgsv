@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.tencent.qcloud.xiaoshipin.common.widget.VerticalViewPager
-        android:id="@+id/vertical_view_pager"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+        <com.tencent.qcloud.xiaoshipin.common.widget.VerticalViewPager
+            android:id="@+id/vertical_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:layout_marginLeft="16dp"
@@ -16,13 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:drawableLeft="@drawable/btn_back_gray"
         android:drawablePadding="5dp"
         android:drawableStart="@drawable/btn_back_gray"
-        android:textColor="@color/colorTransparentGray"
-        />
+        android:textColor="@color/colorTransparentGray" />
+
     <Button
         android:visibility="gone"
         android:id="@+id/btn_follow_shot"

@@ -12,7 +12,7 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
  */
 public class TCVideoView extends TXCloudVideoView {
 
-    private TCLogView mTXLogView = null;
+    private TCLogView mLogView = null;
     private Context mContext;
 
     public TCVideoView(Context context) {
@@ -22,24 +22,24 @@ public class TCVideoView extends TXCloudVideoView {
 	public TCVideoView(Context context, AttributeSet attrs) {
 		super(context,attrs);
         mContext = context;
-        mTXLogView = new TCLogView(context);
-        addView(mTXLogView, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        mTXLogView.setVisibility(GONE);
+        mLogView = new TCLogView(context);
+        addView(mLogView, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        mLogView.setVisibility(GONE);
 	}
 
     //--------------------------下面的代码用于在视频浮层显示Log和事件------------------------
     public void disableLog(boolean disable) {
-        //mTXLogView.disableLog(disable);
+        //mLogView.disableLog(disable);
 
         disableLog(disable, true);
     }
 
     public void disableLog(boolean disable, boolean padding) {
-        if (mTXLogView != null) {
+        if (mLogView != null) {
             if (disable) {
-                mTXLogView.setVisibility(GONE);
+                mLogView.setVisibility(GONE);
             } else {
-                removeView(mTXLogView);
+                removeView(mLogView);
                 float scale = mContext.getResources().getDisplayMetrics().density;
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
                 if (padding) {
@@ -48,21 +48,21 @@ public class TCVideoView extends TXCloudVideoView {
                     params.leftMargin = (int) (10 * scale + 0.5);
                     params.rightMargin = (int) (10 * scale + 0.5);
                 }
-                addView(mTXLogView, params);
-                mTXLogView.setVisibility(VISIBLE);
+                addView(mLogView, params);
+                mLogView.setVisibility(VISIBLE);
             }
         }
     }
 
     public void clearLog() {
-        if (mTXLogView != null) {
-            mTXLogView.clearLog();
+        if (mLogView != null) {
+            mLogView.clearLog();
         }
     }
 
     public void setLogText(Bundle status, Bundle event, int eventId) {
-        if (mTXLogView != null) {
-            mTXLogView.setLogText(status, event, eventId);
+        if (mLogView != null) {
+            mLogView.setLogText(status, event, eventId);
         }
     }
 }

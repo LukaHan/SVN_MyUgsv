@@ -3,6 +3,7 @@ package com.tencent.qcloud.xiaoshipin.videoeditor.motion;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView;
 import com.tencent.qcloud.xiaoshipin.videoeditor.BaseEditFragment;
@@ -209,7 +210,7 @@ public class TCMotionFragment extends BaseEditFragment implements View.OnClickLi
         long currentTime = mActivityVideoProgressController.getCurrentTimeMs();
 
         if (((TCVideoEffectActivity) getActivity()).isPreviewFinish) {
-            TXCLog.i(TAG, "pressMotion, preview finished, ignore");
+            Log.i(TAG, "pressMotion, preview finished, ignore");
             mStartMark = false;
             return;
         }

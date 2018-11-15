@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.widget.VideoWorkProgressFragment;
@@ -349,13 +349,13 @@ public class TCVideoCutterActivity extends FragmentActivity implements
 
         @Override
         public void onCutChangeKeyDown() {
-            TXCLog.i(TAG, "mCutChangeListener, onCutChangeKeyDown, stopPlay()");
+            Log.i(TAG, "mCutChangeListener, onCutChangeKeyDown, stopPlay()");
             mTXVideoEditer.stopPlay();
         }
 
         @Override
         public void onCutChangeKeyUp(long startTime, long endTime, int type) {
-            TXCLog.i(TAG, "mCutChangeListener, onCutChangeKeyUp, startPlayFromTime");
+            Log.i(TAG, "mCutChangeListener, onCutChangeKeyUp, startPlayFromTime");
             mCutterStartTime = startTime;
             mCutterEndTime = endTime;
             mTXVideoEditer.startPlayFromTime(startTime, endTime);
@@ -371,7 +371,7 @@ public class TCVideoCutterActivity extends FragmentActivity implements
 
     @Override
     public void onPreviewFinishedWrapper() {
-        TXCLog.i(TAG, "onPreviewFinishedWrapper startPlayFromTime mCutterStartTime:" + mCutterStartTime + ",mCutterEndTime:" + mCutterEndTime);
+        Log.i(TAG, "onPreviewFinishedWrapper startPlayFromTime mCutterStartTime:" + mCutterStartTime + ",mCutterEndTime:" + mCutterEndTime);
         mTXVideoEditer.startPlayFromTime(mCutterStartTime, mCutterEndTime);
     }
     /**

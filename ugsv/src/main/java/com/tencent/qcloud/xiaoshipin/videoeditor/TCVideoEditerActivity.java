@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.utils.FileUtils;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
@@ -220,7 +219,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        TXCLog.i(TAG, "onResume");
+        Log.i(TAG, "onResume");
         if (!mKeyguardManager.inKeyguardRestrictedInputMode()) {
             TCVideoEditerWrapper.getInstance().addTXVideoPreviewListenerWrapper(this);
             restartPlay();
@@ -278,7 +277,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
 
     @Override // 预览完成回调
     public void onPreviewFinishedWrapper() {
-        TXCLog.i(TAG, "---------------onPreviewFinished-----------------");
+        Log.i(TAG, "---------------onPreviewFinished-----------------");
         stopPlay();
         startPlay(0, mVideoDuration);
     }
@@ -542,7 +541,7 @@ public class TCVideoEditerActivity extends FragmentActivity implements
         mWorkLoadingProgress.show(getSupportFragmentManager(), "progress_dialog");
 
         // 添加片尾水印
-        addTailWaterMark();
+//        addTailWaterMark();
 
         mTXVideoEditer.setCutFromTime(0, mVideoDuration);
         mTXVideoEditer.setVideoGenerateListener(this);

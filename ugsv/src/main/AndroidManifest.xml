@@ -34,22 +34,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application>
-        <!--android:name="com.tencent.qcloud.xiaoshipin.TCApplication"-->
-        <!--android:allowBackup="true"-->
-        <!--android:icon="@mipmap/ic_launcher"-->
-        <!--android:label="@string/app_name"-->
-        <!--android:largeHeap="true"-->
-        <!--android:theme="@style/AppTheme">-->
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.mainui.TCSplashActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
 
         <!-- 消息收发service -->
         <service
@@ -86,23 +70,6 @@
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.login.TCLoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.login.TCRegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/RegisterTheme" />
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.mainui.TCMainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.tencent.qcloud.xiaoshipin.mainui.TCMainVpActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.tencent.qcloud.xiaoshipin.play.TCVodPlayerActivity"
@@ -208,13 +175,13 @@
         <activity android:name=".userinfo.TCAboutActivity" />
 
         <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="com.dzh.ugsv.fileprovider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/filepaths" />-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="com.dzh.ugsv.fileprovider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/filepaths" />-->
         <!--</provider>-->
 
         <uses-library
@@ -242,6 +209,10 @@
             android:theme="@style/Theme.UMDefault" />
 
         <activity android:name=".videopublish.TCVideoPublishActivity" />
+        <activity android:name=".common.activity.FansAndCommentActivity" />
+        <activity
+            android:name=".mainui.TCMainActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

@@ -75,7 +75,7 @@ public class TXUGCPublish {
         }
 
         if (bVideoFileExist == false) {
-            //TXCLog.e(TAG, "publishVideo invalid video file");
+            //Log.e(TAG, "publishVideo invalid video file");
             return TVCConstants.ERR_UGC_INVALID_VIDEO_FILE;
         }
 

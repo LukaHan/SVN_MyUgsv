@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.tencent.liteav.basic.log.TXCLog;
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.activity.TCBaseActivity;
 import com.tencent.qcloud.xiaoshipin.common.utils.DownloadUtil;
@@ -30,12 +29,11 @@ import com.tencent.qcloud.xiaoshipin.common.utils.TCUtils;
 import com.tencent.qcloud.xiaoshipin.common.widget.CircleImageView;
 import com.tencent.qcloud.xiaoshipin.common.widget.VerticalViewPager;
 import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
-import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveListFragment;
+import com.tencent.qcloud.xiaoshipin.mainui.list.TCLiveUserListFragment;
 import com.tencent.qcloud.xiaoshipin.mainui.list.TCVideoInfo;
 import com.tencent.qcloud.xiaoshipin.videorecord.TCVideoRecordActivity;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
-import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.TXVodPlayConfig;
 import com.tencent.rtmp.TXVodPlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -161,16 +159,16 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
         mVerticalViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                TXLog.i(TAG, "mVerticalViewPager, onPageScrolled position = " + position);
+                Log.i(TAG, "mVerticalViewPager, onPageScrolled position = " + position);
 //                mCurrentPosition = position;
             }
 
             @Override
             public void onPageSelected(int position) {
-                TXLog.i(TAG, "mVerticalViewPager, onPageSelected position = " + position);
+                Log.i(TAG, "mVerticalViewPager, onPageSelected position = " + position);
                 mCurrentPosition = position;
                 // 滑动界面，首先让之前的播放器暂停，并seek到0
-                TXLog.i(TAG, "滑动后，让之前的播放器暂停，mTXVodPlayer = " + mTXVodPlayer);
+                Log.i(TAG, "滑动后，让之前的播放器暂停，mTXVodPlayer = " + mTXVodPlayer);
                 if (mTXVodPlayer != null) {
                     mTXVodPlayer.seek(0);
                     mTXVodPlayer.pause();
@@ -185,7 +183,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
         mVerticalViewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View page, float position) {
-                TXLog.i(TAG, "mVerticalViewPager, transformPage pisition = " + position + " mCurrentPosition" + mCurrentPosition);
+                Log.i(TAG, "mVerticalViewPager, transformPage pisition = " + position + " mCurrentPosition" + mCurrentPosition);
                 if (position != 0) {
                     return;
                 }
@@ -237,7 +235,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
 
             @Override
             public void onDownloading(final int progress) {
-                TXCLog.i(TAG, "downloadVideo, progress = " + progress);
+                Log.i(TAG, "downloadVideo, progress = " + progress);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -290,7 +288,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
 
 
         protected PlayerInfo instantiatePlayerInfo(int position) {
-            TXCLog.d(TAG, "instantiatePlayerInfo " + position);
+            Log.d(TAG, "instantiatePlayerInfo " + position);
 
             PlayerInfo playerInfo = new PlayerInfo();
             TXVodPlayer vodPlayer = new TXVodPlayer(TCVodPlayerActivity.this);
@@ -321,7 +319,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
                 playerInfo.txVodPlayer.stopPlay(true);
                 playerInfoList.remove(playerInfo);
 
-                TXCLog.d(TAG, "destroyPlayerInfo " + position);
+                Log.d(TAG, "destroyPlayerInfo " + position);
             }
         }
 
@@ -364,7 +362,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            TXCLog.i(TAG, "MyPagerAdapter instantiateItem, position = " + position);
+            Log.i(TAG, "MyPagerAdapter instantiateItem, position = " + position);
             TCVideoInfo tcLiveInfo = mTCLiveInfoList.get(position);
 
             View view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_player_content, null);
@@ -374,7 +372,8 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
             TCUtils.blurBgPic(TCVodPlayerActivity.this, coverImageView, tcLiveInfo.frontcover, R.drawable.bg);
             // 头像
             CircleImageView ivAvatar = (CircleImageView) view.findViewById(R.id.player_civ_avatar);
-            Glide.with(TCVodPlayerActivity.this).load(tcLiveInfo.headpic).error(R.drawable.face).into(ivAvatar);
+            Glide.with(TCVodPlayerActivity.this).load(tcLiveInfo.headpic).into(ivAvatar);
+//            Glide.with(TCVodPlayerActivity.this).load(tcLiveInfo.headpic).error(R.drawable.face).into(ivAvatar);
             // 姓名
             TextView tvName = (TextView) view.findViewById(R.id.player_tv_publisher_name);
             if (TextUtils.isEmpty(tcLiveInfo.nickname) || "null".equals(tcLiveInfo.nickname)) {
@@ -402,7 +401,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            TXCLog.i(TAG, "MyPagerAdapter destroyItem, position = " + position);
+            Log.i(TAG, "MyPagerAdapter destroyItem, position = " + position);
 
             destroyPlayerInfo(position);
             
@@ -485,7 +484,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
                 playerInfo.isBegin = true;
             }
             if (mTXVodPlayer == player) {
-                TXLog.i(TAG, "onPlayEvent, event I FRAME, player = " + player);
+                Log.i(TAG, "onPlayEvent, event I FRAME, player = " + player);
                 mIvCover.setVisibility(View.GONE);
                 TCUserMgr.getInstance().uploadLogs(TCConstants.ELK_ACTION_VOD_PLAY, TCUserMgr.getInstance().getUserId(), event, "点播播放成功", new Callback() {
                     @Override
@@ -499,18 +498,18 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
             }
         } else if (event == TXLiveConstants.PLAY_EVT_VOD_PLAY_PREPARED) {
             if (mTXVodPlayer == player) {
-                TXLog.i(TAG, "onPlayEvent, event prepared, player = " + player);
+                Log.i(TAG, "onPlayEvent, event prepared, player = " + player);
                 mTXVodPlayer.resume();
             }
         } else if (event == TXLiveConstants.PLAY_EVT_PLAY_BEGIN) {
             PlayerInfo playerInfo = mPagerAdapter.findPlayerInfo(player);
             if (playerInfo != null && playerInfo.isBegin) {
                 mIvCover.setVisibility(View.GONE);
-                TXCLog.i(TAG, "onPlayEvent, event begin, cover remove");
+                Log.i(TAG, "onPlayEvent, event begin, cover remove");
             }
         } else if (event < 0) {
             if (mTXVodPlayer == player) {
-                TXLog.i(TAG, "onPlayEvent, event prepared, player = " + player);
+                Log.i(TAG, "onPlayEvent, event prepared, player = " + player);
 
                 String desc = null;
                 switch (event) {
@@ -557,7 +556,7 @@ public class TCVodPlayerActivity extends TCBaseActivity implements ITXVodPlayLis
         stopPlay(true);
         Intent rstData = new Intent();
         rstData.putExtra(TCConstants.ACTIVITY_RESULT, errorMsg);
-        setResult(TCLiveListFragment.START_LIVE_PLAY, rstData);
+        setResult(TCLiveUserListFragment.START_LIVE_PLAY, rstData);
         super.showErrorAndQuit(errorMsg);
     }
 

@@ -4,8 +4,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
-import com.tencent.liteav.basic.log.TXCLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class TCVideoEditerMgr {
                 if (fileItem.getFileName() != null && fileItem.getFileName().endsWith(".mp4")) {
                     videos.add(fileItem);
                 }
-                TXCLog.d(TAG, "fileItem = " + fileItem.toString());
+                Log.d(TAG, "fileItem = " + fileItem.toString());
             }
             while (cursor.moveToNext());
         }

@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
  * 1.实现ITXLiveBaseListener回调接口获取RTMPSDK的log
  * 2.开启单独线程将log保存到sdcard路径：tencent/imsdklogs/com/tencent/qcloud/xiaozhibo/rtmpsdk_日期.log
  *   其中日期以天为单位，每天保存一个文件，如rtmpsdk_20160901.log
- * 3.app的log使用TXLog和RTMPSDK的log一起保存
+ * 3.app的log使用Log和RTMPSDK的log一起保存
  */
 public class TCLog implements ITXLiveBaseListener {
     static private int LOG_MSG = 1001;

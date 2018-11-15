@@ -3,6 +3,7 @@ package com.tencent.qcloud.xiaoshipin.videojoiner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,7 +14,7 @@ import com.tencent.qcloud.xiaoshipin.login.TCUserMgr;
 import com.tencent.qcloud.xiaoshipin.videochoose.TCVideoFileInfo;
 import com.tencent.qcloud.xiaoshipin.videoeditor.TCVideoCutterActivity;
 import com.tencent.qcloud.xiaoshipin.videoeditor.utils.TCEditerUtil;
-import com.tencent.rtmp.TXLog;
+
 import com.tencent.ugc.TXVideoEditConstants;
 import com.tencent.ugc.TXVideoJoiner;
 
@@ -92,7 +93,7 @@ public class TCVideoJoinerActivity extends FragmentActivity {
         @Override
         public void onJoinProgress(float progress) {
             int prog = (int) (progress * 100);
-            TXLog.d(TAG, "composer progress = " + prog);
+            Log.d(TAG, "composer progress = " + prog);
             mWorkProgressFragment.setProgress(prog);
         }
 

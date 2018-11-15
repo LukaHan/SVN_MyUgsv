@@ -2,11 +2,12 @@ package com.tencent.qcloud.xiaoshipin.videoeditor.bgm;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tencent.liteav.basic.log.TXCLog;
-import com.tencent.qcloud.xiaoshipin.TCApplication;
+
+import com.tencent.qcloud.xiaoshipin.Ugsv;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCConstants;
 import com.tencent.qcloud.xiaoshipin.common.utils.TCHttpEngine;
 import com.tencent.qcloud.xiaoshipin.videoeditor.bgm.utils.TCBGMDownloadProgress;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class TCBGMManager {
     private static final String TAG = "TCBgmManager";
     private boolean isLoading;
-    private SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(TCApplication.getApplication());
+    private SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(Ugsv.getApplication());
     private LoadBgmListener mLoadBgmListener;
 
     private static class TCBgmMgrHolder {
@@ -38,14 +39,14 @@ public class TCBGMManager {
 
     public void loadBgmList(){
         if(isLoading){
-            TXCLog.e(TAG, "loadBgmList, is loading");
+            Log.e(TAG, "loadBgmList, is loading");
             return;
         }
         isLoading = true;
         TCHttpEngine.getInstance().get(TCConstants.SVR_BGM_GET_URL, new TCHttpEngine.Listener() {
             @Override
             public void onResponse(int retCode, String retMsg, JSONObject retData) {
-                TXCLog.i(TAG, "retData = " + retData);
+                Log.i(TAG, "retData = " + retData);
                 try {
                     JSONObject bgmObject = retData.getJSONObject("bgm");
                     if(bgmObject == null && mLoadBgmListener != null){
@@ -94,7 +95,7 @@ public class TCBGMManager {
 
             @Override
             public void onDownloadProgress(int progress) {
-                TXCLog.i(TAG, "downloadBgmInfo, progress = " + progress);
+                Log.i(TAG, "downloadBgmInfo, progress = " + progress);
                 if(mLoadBgmListener != null){
                     mLoadBgmListener.onDownloadProgress(progress);
                 }
@@ -102,7 +103,7 @@ public class TCBGMManager {
 
             @Override
             public void onDownloadSuccess(String filePath) {
-                TXCLog.i(TAG, "onDownloadSuccess, filePath = " + filePath);
+                Log.i(TAG, "onDownloadSuccess, filePath = " + filePath);
                 if(mLoadBgmListener != null){
                     mLoadBgmListener.onBgmDownloadSuccess(position, filePath);
                 }

@@ -189,4 +189,6 @@
     <!-- 裁剪范围颜色 -->
     <color name="colorAccentTransparent30">#B2FF584C</color>
     <color name="actionsheet_gray">#8F8F8F</color>
+
+    <color name="main_tab_unsel">#DCDCDC</color>
 </resources>

@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tencent.liteav.basic.log.TXCLog;
+
 import com.tencent.qcloud.xiaoshipin.R;
 import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.VideoMaterialDownloadProgress;
 import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.VideoUtil;
@@ -228,12 +229,20 @@ public class BeautySettingPannel extends FrameLayout implements SeekBar.OnSeekBa
 
     private IOnBeautyParamsChangeListener mBeautyChangeListener;
 
+    public BeautySettingPannel(Context context) {
+        this(context,null);
+    }
+
     public BeautySettingPannel(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         View view = LayoutInflater.from(context).inflate(R.layout.beauty_pannel, this);
         mContext = context;
         initView(view);
+    }
+
+    public BeautySettingPannel(Context context, AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs);
     }
 
     public void setBeautyParamsChangeListener(IOnBeautyParamsChangeListener listener) {
@@ -408,7 +417,7 @@ public class BeautySettingPannel extends FrameLayout implements SeekBar.OnSeekBa
                                         ((Activity)mContext).runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                TXCLog.i(TAG, "onDownloadProgress, progress = " + progress);
+                                                Log.i(TAG, "onDownloadProgress, progress = " + progress);
                                                 if(mCustomProgressDialog == null){
                                                     mCustomProgressDialog = new CustomProgressDialog();
                                                     mCustomProgressDialog.createLoadingDialog(mContext, "");

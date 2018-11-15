@@ -4,7 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.tencent.qcloud.xiaoshipin.TCApplication;
+import com.tencent.qcloud.xiaoshipin.Ugsv;
 import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.HttpFileListener;
 import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.HttpFileUtil;
 import com.tencent.qcloud.xiaoshipin.common.widget.beautysetting.utils.VideoDeviceUtil;
@@ -68,7 +68,7 @@ public class TCBGMDownloadProgress {
             }
 
         };
-        File onlineMaterialDir = VideoDeviceUtil.getExternalFilesDir(TCApplication.getApplication(), BGM_FOLDER);
+        File onlineMaterialDir = VideoDeviceUtil.getExternalFilesDir(Ugsv.getApplication(), BGM_FOLDER);
         if (onlineMaterialDir == null || onlineMaterialDir.getName().startsWith("null")) {
             mListener.onDownloadFail("存储空间不足");
             stop();
